@@ -1,4 +1,5 @@
 import 'package:doc2heal_doctor/screens/signup_screen.dart';
+import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/rich_text.dart';
@@ -136,13 +137,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SingupScreen(),
+                          builder: (context) => WelcomeScreen(),
                         ));
                       },
                       child: richText(
                           context: context,
-                          firstTxt: "Don't have an Account?  ",
-                          secondTxt: "Sign-up"),
+                          firstTxt: "Don't have an account? ",
+                          secondTxt:
+                              "Uplod\n the information yours,and join\n the driver Community"),
                     )
                   ],
                 ),

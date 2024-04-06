@@ -1,3 +1,4 @@
+import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/screens/signup_screen.dart';
 import 'package:doc2heal_doctor/widgets/button.dart';
@@ -53,8 +54,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (ctx) =>  LoginScreen()));
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (ctx) => LoginScreen()));
                       },
                       child: const AutButton(text: 'Continue')),
                   const SizedBox(
@@ -70,8 +71,8 @@ class WelcomeScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       // Get.to(SignUp());
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (ctx) =>  SingupScreen()));
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (ctx) => DoctorDetails()));
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),

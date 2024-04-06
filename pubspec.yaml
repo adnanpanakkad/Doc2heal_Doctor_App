@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.2.1
   firebase_core: ^2.28.0
   connectivity: ^3.0.6
+  firebase_auth: ^4.19.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
     - assets\LogoappLogo.png
     - assets\trendy-design-of-account-phishing-flat-illustration-vector.jpg
     - assets\image.png
+    - assets\Ellipse 1.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
