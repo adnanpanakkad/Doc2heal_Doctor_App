@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
+
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/rich_text.dart';
 import 'package:doc2heal_doctor/widgets/text_feild.dart';
 import 'package:doc2heal_doctor/widgets/validator.dart';
-
 import 'package:flutter/material.dart';
 
 class SingupScreen extends StatelessWidget {
@@ -69,17 +69,17 @@ class SingupScreen extends StatelessWidget {
                   children: [
                     CustomButton(
                         text: "Sign up",
-                        onTap: () async {
-                          // if (formKey.currentState!.validate()) {
-                          //   await Sharedpref.instence.setAuthDetaials(
-                          //       emailController.text.trim(),
-                          //       passwordController.text.trim());
+                        onTap: () {
+                          if (formKey.currentState!.validate()) {
+                            // await Sharedpref.instence.setAuthDetaials(
+                            //     emailController.text.trim(),
+                            //     passwordController.text.trim());
 
-                          //   Navigator.of(context)
-                          //       .pushReplacement(MaterialPageRoute(
-                          //     builder: (context) => UserDetailsScreen(),
-                          //   ));
-                          // }
+                            // Navigator.of(context)
+                            //     .pushReplacement(MaterialPageRoute(
+                            //   builder: (context) => UserDetailsScreen(),
+                            // ));
+                          }
                         }),
                     InkWell(
                       onTap: () {
