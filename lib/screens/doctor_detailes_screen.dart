@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:doc2heal_doctor/screens/home_screen.dart';
+import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
+import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
@@ -21,10 +22,18 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   File? seletedImage;
   final DateTime _selectedDate = DateTime.now();
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _genderController = TextEditingController();
+  TextEditingController _birthController = TextEditingController();
+  TextEditingController _experienceController = TextEditingController();
+  TextEditingController _hospitalController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   void selectGender(String? newValue) {
     setState(() {
-      selectedGender = newValue;
+      selectedGender = newValue ?? 'None';
+      _genderController.text = selectedGender!;
     });
   }
 
@@ -117,18 +126,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
-                      keyboardType: TextInputType.number,
-                      // controllers: controller.phoneController,
+                      keyboardType: TextInputType.emailAddress,
+                      controllers: _nameController,
                       sub: 'full name',
                       hittext: 'Enter your full name',
                     ),
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
                       keyboardType: TextInputType.number,
-                      // controllers: controller.phoneController,
+                      controllers: _phoneController,
                       sub: 'Phone number',
                       hittext: 'Enter your phone number',
                     ),
@@ -138,8 +145,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
-                      // controllers: controller.genderController,
+                      controllers: _genderController,
                       sub: 'Gender',
                       hittext: "select gender",
                       suffixicon: DropdownButton(
@@ -164,10 +170,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       height: 5,
                     ),
                     DetailTile(
+                      keyboardType: TextInputType.number,
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
-                      // controllers: controller.birthController,
+                      controllers: _birthController,
                       sub: 'Birthday',
                       hittext: "Enter your Birthday",
                       suffixicon: IconButton(
@@ -182,9 +188,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
                       keyboardType: TextInputType.number,
-                      //controllers: controller.expController,
+                      controllers: _experienceController,
                       sub: 'Experience',
                       hittext: 'Enter your Experience',
                     ),
@@ -194,9 +199,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
-
-                      keyboardType: TextInputType.number,
-                      //controllers: controller.expController,
+                      keyboardType: TextInputType.emailAddress,
+                      controllers: _hospitalController,
                       sub: 'Hospital',
                       hittext: 'Enter your Hospital',
                     ),
@@ -207,7 +211,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       validator: (value) =>
                           Validator().textFeildValidation(value),
                       keyboardType: TextInputType.emailAddress,
-                      // controllers: controller.emailContorllers,
+                      controllers: _emailController,
                       sub: 'Email',
                       hittext: 'Enter your email address',
                     ),
@@ -218,7 +222,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       validator: (value) =>
                           Validator().textFeildValidation(value),
                       keyboardType: TextInputType.emailAddress,
-                      // controllers: controller.emailContorllers,
+                      controllers: _passwordController,
                       sub: 'Password',
                       hittext: 'Enter your Password',
                     ),
@@ -236,8 +240,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         backgroundColor: Appcolor.primaryColor,
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => BottombarScreens()));
           }
         },
         label: const SizedBox(

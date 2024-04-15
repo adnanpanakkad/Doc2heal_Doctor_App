@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "871941574415",
-    "project_id": "doc2heal-doctor",
-    "storage_bucket": "doc2heal-doctor.appspot.com"
+    "project_number": "780277909387",
+    "project_id": "doc2heal-8428c",
+    "storage_bucket": "doc2heal-8428c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:871941574415:android:d00a3459e99ffba295387a",
+        "mobilesdk_app_id": "1:780277909387:android:a13a6f59b337492d93d18e",
+        "android_client_info": {
+          "package_name": "com.example.doc2heal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6qLMOOOhkVobmanfQgalMpjWOsv519FE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780277909387:android:81dc87db5496b1cf93d18e",
         "android_client_info": {
           "package_name": "com.example.doc2heal_doctor"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBGZ_irCEw2qamHUEyki4YWjucIXwtEPF4"
+          "current_key": "AIzaSyB6qLMOOOhkVobmanfQgalMpjWOsv519FE"
         }
       ],
       "services": {
