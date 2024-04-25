@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
@@ -7,8 +6,10 @@ import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
 import 'package:doc2heal_doctor/widgets/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class DoctorDetails extends StatefulWidget {
   const DoctorDetails({super.key});
@@ -170,17 +171,14 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       height: 5,
                     ),
                     DetailTile(
-                      keyboardType: TextInputType.number,
-                      validator: (value) =>
-                          Validator().textFeildValidation(value),
-                      controllers: _birthController,
                       sub: 'Birthday',
-                      hittext: "Enter your Birthday",
-                      suffixicon: IconButton(
-                          onPressed: () {
-                            // controller.getTimeFromUser(context);
-                          },
-                          icon: const Icon(Icons.calendar_month)),
+                      hittext: _birthController.text.isEmpty
+                          ? 'Select your birthday'
+                          : _birthController.text,
+                    ),
+                    GestureDetector(
+                      onTap: () async => _getTimeFromUser(context),
+                      child: const Icon(Icons.calendar_month),
                     ),
                     const SizedBox(
                       height: 5,
@@ -263,5 +261,19 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     setState(() {
       seletedImage = File(pikedImage.path);
     });
+  }
+
+  Future<void> _getTimeFromUser(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _birthController.text = DateFormat.yMd().format(pickedDate);
+      });
+    }
   }
 }

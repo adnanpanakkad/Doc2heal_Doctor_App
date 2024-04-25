@@ -1,5 +1,8 @@
+import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/signup_screen.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
+import 'package:doc2heal_doctor/services/netwok.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/rich_text.dart';
@@ -23,31 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    checkInternetConnectivity();
-  }
-
-  void checkInternetConnectivity() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("No Internet Connection"),
-            content:
-                Text("Please check your internet connection and try again."),
-            actions: <Widget>[
-              TextButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+    ConnectivityUtils.checkInternetConnectivity(context);
   }
 
   @override
@@ -109,29 +88,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     CustomButton(
                         text: "Sign In",
-                        onTap: () {
+                        onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            //   User? user = await Repo.userSignin(
-                            //       emailController.text.trim(),
-                            //       passwordController.text.trim());
-                            //   if (user != null) {
-                            //     await Sharedpref.instence.addUserId(user.id!);
-                            //     await Sharedpref.instence.setAuthDetaials(
-                            //         emailController.text.trim(),
-                            //         passwordController.text.trim());
-                            //     FirebaseHelper.getFirebaseMessagingToken();
-                            //     Navigator.of(context).push(MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           CustomBottamSheet(user: user),
-                            //     ));
-                            //   } else {
-                            //     Snacbar.authSnack(
-                            //         "Failed to find user, Check your password and username",
-                            //         context);
-                            //   }
-                            // } else {
-                            //   Snacbar.authSnack("Fill all fields", context);
-                            // const CoustomSnackbar(message: 'fill all colums');
+                            await AuthenticationRepository.userEmailLogin(
+                                emailController.text, passwordController.text);
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => BottombarScreens()));
                           }
                         }),
                     InkWell(
@@ -144,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                           firstTxt: "Don't have an account? ",
                           secondTxt:
-                              "Uplod\n the information yours,and join\n the driver Community"),
+                              "Uplod\n the information yours,and join\n the doctor Community"),
                     )
                   ],
                 ),

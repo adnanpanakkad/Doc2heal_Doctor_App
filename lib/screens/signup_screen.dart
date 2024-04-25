@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/rich_text.dart';
@@ -71,14 +73,10 @@ class SingupScreen extends StatelessWidget {
                         text: "Sign up",
                         onTap: () {
                           if (formKey.currentState!.validate()) {
-                            // await Sharedpref.instence.setAuthDetaials(
-                            //     emailController.text.trim(),
-                            //     passwordController.text.trim());
-
-                            // Navigator.of(context)
-                            //     .pushReplacement(MaterialPageRoute(
-                            //   builder: (context) => UserDetailsScreen(),
-                            // ));
+                            AuthenticationRepository.userEmailSignup(
+                                emailController.text, passwordController.text);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => BottombarScreens()));
                           }
                         }),
                     InkWell(
