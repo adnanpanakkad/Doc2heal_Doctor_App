@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-
 import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DeatialAppbar extends StatelessWidget {
-  const DeatialAppbar({super.key, required this.text});
+  const DeatialAppbar({super.key, required this.text, this.onTap});
   final text;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -25,12 +25,8 @@ class DeatialAppbar extends StatelessWidget {
           decoration: BoxDecoration(
               color: Appcolor.primaryColor,
               borderRadius: BorderRadius.circular(15)),
-          child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-              icon: const Icon(Icons.arrow_back)),
+          child:
+              IconButton(onPressed: onTap, icon: const Icon(Icons.arrow_back)),
         ),
       ),
     );

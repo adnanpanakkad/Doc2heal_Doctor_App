@@ -1,6 +1,5 @@
 import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
-import 'package:doc2heal_doctor/screens/signup_screen.dart';
 import 'package:doc2heal_doctor/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

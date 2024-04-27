@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/chat_screen.dart';
+import 'package:doc2heal_doctor/screens/document_detailes.dart';
+import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
@@ -42,9 +44,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-      appBar: const PreferredSize(
+      appBar: PreferredSize(
           preferredSize: Size(double.maxFinite, 70),
-          child: DeatialAppbar(text: 'Doctor Details')),
+          child: DeatialAppbar(
+            text: 'Doctor Details',
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => WelcomeScreen())),
+          )),
       body: Form(
         key: formKey,
         child: ListView(
@@ -183,17 +189,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     const SizedBox(
                       height: 5,
                     ),
-                    DetailTile(
-                      validator: (value) =>
-                          Validator().textFeildValidation(value),
-                      keyboardType: TextInputType.number,
-                      controllers: _experienceController,
-                      sub: 'Experience',
-                      hittext: 'Enter your Experience',
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    // DetailTile(
+                    //   validator: (value) =>
+                    //       Validator().textFeildValidation(value),
+                    //   keyboardType: TextInputType.number,
+                    //   controllers: _experienceController,
+                    //   sub: 'Experience',
+                    //   hittext: 'Enter your Experience',
+                    // ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
@@ -237,10 +243,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
         onPressed: () {
-          if (formKey.currentState!.validate()) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => BottombarScreens()));
-          }
+          //if (formKey.currentState!.validate()) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => DocumentDetailes()));
+          //  }
         },
         label: const SizedBox(
           child: Row(

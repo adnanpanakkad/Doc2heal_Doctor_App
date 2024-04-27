@@ -1,5 +1,5 @@
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
-import 'package:doc2heal_doctor/screens/signup_screen.dart';
+import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/netwok.dart';
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => WelcomeScreen(),
+                          builder: (context) => DoctorDetails(),
                         ));
                       },
                       child: richText(
