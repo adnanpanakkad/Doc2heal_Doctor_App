@@ -3,7 +3,6 @@ import 'package:doc2heal_doctor/screens/profile_screen.dart';
 import 'package:doc2heal_doctor/screens/schedule_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class BottombarScreens extends StatefulWidget {
   const BottombarScreens({super.key});
 
@@ -16,7 +15,9 @@ class __BottombarScreensState extends State<BottombarScreens> {
   final List<Widget> _pages = [
     const ScheduleScreen(),
     const ChatScreen(),
-    const ProfileScreen(),
+    const ProfileScreen(
+      doctorId: '0',
+    ),
   ];
 
   @override
@@ -31,7 +32,6 @@ class __BottombarScreensState extends State<BottombarScreens> {
         },
         selectedIndex: _currentPageIndex,
         destinations: const <NavigationDestination>[
-         
           NavigationDestination(
             icon: Icon(Icons.calendar_today),
             label: 'Schedule',

@@ -1,14 +1,16 @@
 import 'dart:io';
+import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
+import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
 import 'package:doc2heal_doctor/widgets/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -242,11 +244,31 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
-        onPressed: () {
-          //if (formKey.currentState!.validate()) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DocumentDetailes()));
-          //  }
+        onPressed: () async {
+          if (formKey.currentState!.validate()) {
+            DoctorModel doctor = DoctorModel(
+                imagepath: seletedImage!.path,
+                name: _nameController.text.trim(),
+                phone: _phoneController.text.trim(),
+                gender: _genderController.text.trim(),
+                birthday: _birthController.text.trim(),
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim());
+            await DoctorRepository().saveDoctorData(doctor, '0');
+            await AuthenticationRepository.userEmailSignup(
+                _emailController.text, _passwordController.text);
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DocumentDetailes(
+                imagepath: seletedImage!.path,
+                name: _nameController.text.trim(),
+                phone: _phoneController.text.trim(),
+                gender: _genderController.text.trim(),
+                birthday: _birthController.text.trim(),
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim(),
+              ),
+            ));
+          }
         },
         label: const SizedBox(
           child: Row(

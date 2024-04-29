@@ -96,7 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => BottombarScreens()));
                           }
-                        }),
+                        }
+                        ),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(

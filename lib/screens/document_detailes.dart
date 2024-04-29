@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
+import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
@@ -10,7 +13,25 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DocumentDetailes extends StatefulWidget {
-  const DocumentDetailes({super.key});
+  String? imagepath;
+  String? expcerft;
+  final String name;
+  final String phone;
+  final String gender;
+  final String birthday;
+  final String email;
+  final String password;
+
+  DocumentDetailes({
+    required this.imagepath,
+    this.expcerft,
+    required this.name,
+    required this.phone,
+    required this.gender,
+    required this.birthday,
+    required this.email,
+    required this.password,
+  });
 
   @override
   State<DocumentDetailes> createState() => _DocumentDetailesState();
@@ -80,14 +101,27 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
-        onPressed: () {
+        onPressed: () async {
+          DoctorModel doctor = DoctorModel(
+            imagepath: widget.imagepath,
+            expcerft: seletedImage!.path,
+            name: widget.name,
+            phone: widget.phone,
+            gender: widget.gender,
+            birthday: widget.birthday,
+            email: widget.email,
+            password: widget.password,
+          );
+         
+          await DoctorRepository().saveDoctorData(doctor, '0');
           if (seletedImage != null) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const BottombarScreens()));
+              builder: (context) => const BottombarScreens(),
+            ));
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
-              content: Text('certificate not added'),
+              content: Text('Certificate not added'),
             ));
           }
         },
