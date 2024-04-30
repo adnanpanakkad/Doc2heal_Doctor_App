@@ -5,16 +5,18 @@ class DoctorModel {
   final String phone;
   final String gender;
   final String birthday;
+  final String specialization;
   final String email;
   final String password;
 
   DoctorModel({
-    required this.imagepath,
+    this.imagepath,
     this.expcerft,
     required this.name,
     required this.phone,
     required this.gender,
     required this.birthday,
+    required this.specialization,
     required this.email,
     required this.password,
   });
@@ -28,6 +30,7 @@ class DoctorModel {
       phone: json['phone'],
       gender: json['gender'],
       birthday: json['birthday'],
+      specialization: json['specialization'],
       email: json['email'],
       password: json['password'],
     );
@@ -40,6 +43,7 @@ class DoctorModel {
       'phone': phone,
       'gender': gender,
       'birthday': birthday,
+      'specialization': specialization,
       'email': email,
       'password': password,
     };

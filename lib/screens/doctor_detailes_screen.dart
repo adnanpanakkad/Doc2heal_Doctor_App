@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
-import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
-import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
@@ -10,6 +8,7 @@ import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
 import 'package:doc2heal_doctor/widgets/validator.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,16 +24,16 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   String? selectedGender;
   File? seletedImage;
-  final DateTime _selectedDate = DateTime.now();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _genderController = TextEditingController();
-  TextEditingController _birthController = TextEditingController();
-  TextEditingController _experienceController = TextEditingController();
-  TextEditingController _hospitalController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _birthController = TextEditingController();
+  final TextEditingController _specializationController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   void selectGender(String? newValue) {
     setState(() {
       selectedGender = newValue ?? 'None';
@@ -47,17 +46,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: PreferredSize(
-          preferredSize: Size(double.maxFinite, 70),
+          preferredSize: const Size(double.maxFinite, 70),
           child: DeatialAppbar(
             text: 'Doctor Details',
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => WelcomeScreen())),
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const WelcomeScreen())),
           )),
       body: Form(
         key: formKey,
         child: ListView(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Container(
@@ -90,7 +89,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         SizedBox(
                           child: Stack(
                             alignment: const Alignment(1, 1),
@@ -131,7 +130,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
@@ -191,24 +190,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     const SizedBox(
                       height: 5,
                     ),
-                    // DetailTile(
-                    //   validator: (value) =>
-                    //       Validator().textFeildValidation(value),
-                    //   keyboardType: TextInputType.number,
-                    //   controllers: _experienceController,
-                    //   sub: 'Experience',
-                    //   hittext: 'Enter your Experience',
-                    // ),
-                    // const SizedBox(
-                    //   height: 5,
-                    // ),
                     DetailTile(
                       validator: (value) =>
                           Validator().textFeildValidation(value),
                       keyboardType: TextInputType.emailAddress,
-                      controllers: _hospitalController,
-                      sub: 'Hospital',
-                      hittext: 'Enter your Hospital',
+                      controllers: _specializationController,
+                      sub: 'specialization',
+                      hittext: 'Enter your specialization',
                     ),
                     const SizedBox(
                       height: 5,
@@ -252,6 +240,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 phone: _phoneController.text.trim(),
                 gender: _genderController.text.trim(),
                 birthday: _birthController.text.trim(),
+                specialization: _specializationController.text.trim(),
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim());
             await DoctorRepository().saveDoctorData(doctor, '0');
@@ -264,6 +253,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 phone: _phoneController.text.trim(),
                 gender: _genderController.text.trim(),
                 birthday: _birthController.text.trim(),
+                specialization: _specializationController.text.trim(),
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim(),
               ),
@@ -283,12 +273,29 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   }
 
   Future imagepicker() async {
-    final pikedImage =
+    final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pikedImage == null) return;
+    if (pickedImage == null) return;
     setState(() {
-      seletedImage = File(pikedImage.path);
+      seletedImage = File(pickedImage.path);
     });
+
+    // Generate a unique filename for the image
+    String uniqueFilename = DateTime.now().microsecondsSinceEpoch.toString();
+
+    // Create a reference to the location you want to upload to in Firebase Storage
+    Reference reference =
+        FirebaseStorage.instance.ref().child('images/$uniqueFilename');
+
+    // Upload the file to Firebase Storage
+    UploadTask uploadTask = reference.putFile(seletedImage!);
+
+    // Wait for the upload to complete and then get the download URL
+    TaskSnapshot taskSnapshot = await uploadTask;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+    // You can now use the downloadUrl for further processing, such as saving it to Firestore
+    print("Download URL: $downloadUrl");
   }
 
   Future<void> _getTimeFromUser(BuildContext context) async {

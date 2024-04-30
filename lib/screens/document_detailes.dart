@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
-import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +19,7 @@ class DocumentDetailes extends StatefulWidget {
   final String phone;
   final String gender;
   final String birthday;
+  final String specialization;
   final String email;
   final String password;
 
@@ -29,6 +30,7 @@ class DocumentDetailes extends StatefulWidget {
     required this.phone,
     required this.gender,
     required this.birthday,
+    required this.specialization,
     required this.email,
     required this.password,
   });
@@ -109,10 +111,11 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
             phone: widget.phone,
             gender: widget.gender,
             birthday: widget.birthday,
+            specialization: widget.specialization,
             email: widget.email,
             password: widget.password,
           );
-         
+
           await DoctorRepository().saveDoctorData(doctor, '0');
           if (seletedImage != null) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -138,11 +141,24 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
   }
 
   Future imagepicker() async {
-    final pikedImage =
+    final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pikedImage == null) return;
+    if (pickedImage == null) return;
     setState(() {
-      seletedImage = File(pikedImage.path);
+      seletedImage = File(pickedImage.path);
     });
+
+    // Generate a unique filename for the image
+    String uniqueFilename = DateTime.now().microsecondsSinceEpoch.toString();
+    // Create a reference to the location you want to upload to in Firebase Storage
+    Reference reference =
+        FirebaseStorage.instance.ref().child('images/$uniqueFilename');
+    // Upload the file to Firebase Storage
+    UploadTask uploadTask = reference.putFile(seletedImage!);
+    // Wait for the upload to complete and then get the download URL
+    TaskSnapshot taskSnapshot = await uploadTask;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    // You can now use the downloadUrl for further processing, such as saving it to Firestore
+    print("Download URL: $downloadUrl");
   }
 }
