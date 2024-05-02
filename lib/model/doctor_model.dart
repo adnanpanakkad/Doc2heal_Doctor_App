@@ -8,6 +8,7 @@ class DoctorModel {
   final String specialization;
   final String email;
   final String password;
+   String? uid;
 
   DoctorModel({
     this.imagepath,
@@ -19,6 +20,7 @@ class DoctorModel {
     required this.specialization,
     required this.email,
     required this.password,
+     this.uid,
   });
 
   // Factory constructor to create UserModel from JSON data
@@ -33,6 +35,7 @@ class DoctorModel {
       specialization: json['specialization'],
       email: json['email'],
       password: json['password'],
+      uid: json['uid'],
     );
   }
   Map<String, dynamic> toJson() {
@@ -46,6 +49,9 @@ class DoctorModel {
       'specialization': specialization,
       'email': email,
       'password': password,
+      'uid': uid,
     };
   }
+
+  static Future<DoctorModel?> fromMap(Map<String, dynamic> data) async {}
 }

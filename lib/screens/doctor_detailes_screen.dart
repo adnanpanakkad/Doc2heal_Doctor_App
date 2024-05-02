@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
@@ -7,7 +8,7 @@ import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
-import 'package:doc2heal_doctor/widgets/validator.dart';
+import 'package:doc2heal_doctor/utils/validator.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +24,7 @@ class DoctorDetails extends StatefulWidget {
 
 class _DoctorDetailsState extends State<DoctorDetails> {
   String? selectedGender;
-  File? seletedImage;
+  File? _image;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
@@ -96,9 +97,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                             children: [
                               CircleAvatar(
                                 radius: 55,
-                                backgroundImage: seletedImage == null
+                                backgroundImage: _image == null
                                     ? const AssetImage('assets/Ellipse 1.png')
-                                    : FileImage(seletedImage!) as ImageProvider,
+                                    : FileImage(_image!) as ImageProvider,
                               ),
                               Container(
                                 decoration: BoxDecoration(
@@ -113,7 +114,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                   ],
                                 ),
                                 child: InkWell(
-                                  onTap: imagepicker,
+                                  onTap: () async {
+                                    pickAndUploadImage(context);
+                                  },
                                   child: const CircleAvatar(
                                     radius: 20,
                                     backgroundColor:
@@ -234,30 +237,32 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
           if (formKey.currentState!.validate()) {
-            DoctorModel doctor = DoctorModel(
-                imagepath: seletedImage!.path,
-                name: _nameController.text.trim(),
-                phone: _phoneController.text.trim(),
-                gender: _genderController.text.trim(),
-                birthday: _birthController.text.trim(),
-                specialization: _specializationController.text.trim(),
-                email: _emailController.text.trim(),
-                password: _passwordController.text.trim());
-            await DoctorRepository().saveDoctorData(doctor, '0');
-            await AuthenticationRepository.userEmailSignup(
+            String? uid = await AuthenticationRepository.userEmailSignup(
                 _emailController.text, _passwordController.text);
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DocumentDetailes(
-                imagepath: seletedImage!.path,
-                name: _nameController.text.trim(),
-                phone: _phoneController.text.trim(),
-                gender: _genderController.text.trim(),
-                birthday: _birthController.text.trim(),
-                specialization: _specializationController.text.trim(),
-                email: _emailController.text.trim(),
-                password: _passwordController.text.trim(),
-              ),
-            ));
+            if (uid != null) {
+              DoctorModel doctor = DoctorModel(
+                  imagepath: _image!.path,
+                  name: _nameController.text.trim(),
+                  phone: _phoneController.text.trim(),
+                  gender: _genderController.text.trim(),
+                  birthday: _birthController.text.trim(),
+                  specialization: _specializationController.text.trim(),
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
+                  uid: uid);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => DocumentDetailes(
+                  imagepath: _image!.path,
+                  name: _nameController.text.trim(),
+                  phone: _phoneController.text.trim(),
+                  gender: _genderController.text.trim(),
+                  birthday: _birthController.text.trim(),
+                  specialization: _specializationController.text.trim(),
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
+                ),
+              ));
+            }
           }
         },
         label: const SizedBox(
@@ -272,30 +277,39 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     );
   }
 
-  Future imagepicker() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) return;
-    setState(() {
-      seletedImage = File(pickedImage.path);
-    });
+  Future<String?> pickAndUploadImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    // Generate a unique filename for the image
-    String uniqueFilename = DateTime.now().microsecondsSinceEpoch.toString();
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
 
-    // Create a reference to the location you want to upload to in Firebase Storage
-    Reference reference =
-        FirebaseStorage.instance.ref().child('images/$uniqueFilename');
+      // Upload the image to Firebase Storage
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('images/${_image!.path.split('/').last}');
+      await ref.putFile(_image!);
 
-    // Upload the file to Firebase Storage
-    UploadTask uploadTask = reference.putFile(seletedImage!);
+      // Retrieve the image URL
+      final url = await ref.getDownloadURL();
+      print('Image URL: $url');
 
-    // Wait for the upload to complete and then get the download URL
-    TaskSnapshot taskSnapshot = await uploadTask;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      // Store the image URL in Firestore
+      // final firestore = FirebaseFirestore.instance;
+      // await firestore.doc('0').set(im
 
-    // You can now use the downloadUrl for further processing, such as saving it to Firestore
-    print("Download URL: $downloadUrl");
+      // )
+
+      // return url;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No image selected.')),
+      );
+      print('No image selected.');
+      return null;
+    }
   }
 
   Future<void> _getTimeFromUser(BuildContext context) async {

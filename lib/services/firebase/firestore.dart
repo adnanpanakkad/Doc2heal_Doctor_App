@@ -1,38 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DoctorRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// function to save user data to Firestore
-  Future<void> saveDoctorData(DoctorModel doctor, String id) async {
-    // Added String type for id parameter
+  Future<void> saveDoctorData(DoctorModel doctor) async {
     try {
-      await _db.collection("doctor").doc(id).set(doctor.toJson());
+      DocumentReference docRef =
+          await _db.collection("doctor").add(doctor.toJson());
+      print("Document added with ID: ${docRef.id}");
     } catch (e) {
       throw 'not saved';
     }
   }
 
-  /// Function to fetch user data from Firestore by user ID
-  Future<DoctorModel> getDoctorById(String doctorId, String s) async {
-    try {
-      DocumentSnapshot userSnapshot =
-          await _db.collection("doctor").doc(doctorId).get();
+  Future<DoctorModel?> getDoctorDetails(String email) async {
+    final FirebaseFirestore _db = FirebaseFirestore.instance;
+    final QuerySnapshot result =
+        await _db.collection('doctor').where('email', isEqualTo: email).get();
 
-      if (userSnapshot.exists) {
-        Map<String, dynamic>? userData =
-            userSnapshot.data() as Map<String, dynamic>?;
-        if (userData != null) {
-          return DoctorModel.fromJson(userData);
-        } else {
-          throw Exception('Data is null');
-        }
-      } else {
-        throw Exception('User not found');
-      }
-    } catch (e) {
-      throw Exception('Error fetching data: $e');
+    final List<DocumentSnapshot> documents = result.docs;
+
+    if (documents.length == 0) {
+      print('No doctor found with this email');
+    } else {
+      // Assuming you want to get the details of the first doctor found
+      final Map<String, dynamic> doctorData =
+          documents[0].data() as Map<String, dynamic>;
+      print('Doctor Name: ${doctorData['name']}');
+      print('Doctor Specialization: ${doctorData['specialization']}');
+      // Add more fields as needed
     }
+    return null;
   }
 }

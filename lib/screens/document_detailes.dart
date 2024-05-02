@@ -7,9 +7,7 @@ import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DocumentDetailes extends StatefulWidget {
@@ -22,8 +20,10 @@ class DocumentDetailes extends StatefulWidget {
   final String specialization;
   final String email;
   final String password;
+  String? uid;
 
   DocumentDetailes({
+    super.key,
     required this.imagepath,
     this.expcerft,
     required this.name,
@@ -33,6 +33,7 @@ class DocumentDetailes extends StatefulWidget {
     required this.specialization,
     required this.email,
     required this.password,
+    this.uid,
   });
 
   @override
@@ -114,9 +115,10 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
             specialization: widget.specialization,
             email: widget.email,
             password: widget.password,
+            uid: widget.uid,
           );
 
-          await DoctorRepository().saveDoctorData(doctor, '0');
+          await DoctorRepository().saveDoctorData(doctor);
           if (seletedImage != null) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => const BottombarScreens(),

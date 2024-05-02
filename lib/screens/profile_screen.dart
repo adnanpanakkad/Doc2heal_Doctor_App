@@ -4,9 +4,7 @@ import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final String doctorId;
-
-  const ProfileScreen({Key? key, required this.doctorId}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +13,14 @@ class ProfileScreen extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 70),
         child: DeatialAppbar(text: 'Doctor profile'),
       ),
-      body: FutureBuilder<DoctorModel>(
-        future: DoctorRepository().getDoctorById(doctorId, '0'),
-        builder: (BuildContext context, AsyncSnapshot<DoctorModel> snapshot) {
+      body: FutureBuilder<DoctorModel?>(
+        future: DoctorRepository().getDoctorDetails('email'),
+        builder: (BuildContext context, AsyncSnapshot<DoctorModel?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
+          } else if (snapshot.hasData) {
             DoctorModel doctorData = snapshot.data!;
             return Column(
               children: <Widget>[
@@ -35,9 +33,8 @@ class ProfileScreen extends StatelessWidget {
                         backgroundImage: doctorData.imagepath != null
                             ? NetworkImage(doctorData.imagepath!)
                             : const AssetImage("assets/Ellipse 1.png")
-                                as ImageProvider, // Cast AssetImage to ImageProvider
+                                as ImageProvider,
                       ),
-
                       Card(
                         child: ListTile(
                           title: const Text('Name'),
@@ -52,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       Card(
                         child: ListTile(
-                          title: const Text('specialization'),
+                          title: const Text('Specialization'),
                           subtitle: Text(doctorData.specialization),
                         ),
                       ),
@@ -74,7 +71,6 @@ class ProfileScreen extends StatelessWidget {
                           subtitle: Text(doctorData.phone),
                         ),
                       ),
-                      // Display the certificate image
                       Container(
                           height: 150,
                           width: 200,
@@ -84,6 +80,8 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             );
+          } else {
+            return const Center(child: Text('No data available.'));
           }
         },
       ),

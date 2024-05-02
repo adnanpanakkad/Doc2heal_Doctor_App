@@ -15,9 +15,7 @@ class __BottombarScreensState extends State<BottombarScreens> {
   final List<Widget> _pages = [
     const ScheduleScreen(),
     const ChatScreen(),
-    const ProfileScreen(
-      doctorId: '0',
-    ),
+    const ProfileScreen()
   ];
 
   @override

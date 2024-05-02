@@ -1,15 +1,13 @@
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
-import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/netwok.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
-import 'package:doc2heal_doctor/widgets/custom_button.dart';
-import 'package:doc2heal_doctor/widgets/rich_text.dart';
-import 'package:doc2heal_doctor/widgets/text_feild.dart';
-import 'package:doc2heal_doctor/widgets/validator.dart';
+import 'package:doc2heal_doctor/widgets/common/custom_button.dart';
+import 'package:doc2heal_doctor/widgets/common/rich_text.dart';
+import 'package:doc2heal_doctor/widgets/text_feildes.dart/text_feild.dart';
+import 'package:doc2heal_doctor/utils/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:connectivity/connectivity.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -90,14 +88,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: "Sign In",
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            await AuthenticationRepository.userEmailLogin(
-                                emailController.text, passwordController.text);
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => BottombarScreens()));
+                            String? uid =
+                                await AuthenticationRepository.userEmailLogin(
+                                    emailController.text,
+                                    passwordController.text);
+                            if (uid != null) {
+                              // Login successful, handle navigation or any other actions
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BottombarScreens()));
+                            }
                           }
-                        }
-                        ),
+                        }),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(

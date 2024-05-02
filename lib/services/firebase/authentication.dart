@@ -7,27 +7,25 @@ class AuthenticationRepository {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static User? doctor = FirebaseAuth.instance.currentUser;
 
-  static Future<UserCredential> userEmailSignup(
-      String email, String password) async {
+  static Future<String?> userEmailSignup(String email, String password) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       log('Account created');
 
-      return userCredential;
+      return userCredential.user?.uid;
     } catch (e) {
       log('User Email Signup Error: $e');
       throw Exception('User Email Signup Error: $e');
     }
   }
 
-  static Future<UserCredential> userEmailLogin(
-      String email, String password) async {
+  static Future<String?> userEmailLogin(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       log('User logged in');
-      return userCredential;
+      return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       doctor != null ? const BottombarScreens() : const LoginScreen();
       log('User Email Login Error: ${e.message}');
@@ -37,4 +35,6 @@ class AuthenticationRepository {
       throw Exception('User Email Login Error: $e');
     }
   }
+
+  static signUpWithEmailAndPassword(text, text2) {}
 }
