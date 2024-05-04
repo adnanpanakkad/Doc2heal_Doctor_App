@@ -6,10 +6,12 @@ import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class DocumentDetailes extends StatefulWidget {
   String? imagepath;
   String? expcerft;
@@ -41,18 +43,19 @@ class DocumentDetailes extends StatefulWidget {
 }
 
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-File? seletedImage;
+File? _image;
+String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
 class _DocumentDetailesState extends State<DocumentDetailes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size(double.maxFinite, 70),
+          preferredSize: const Size(double.maxFinite, 70),
           child: DeatialAppbar(
             text: 'Document Details',
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => DoctorDetails())),
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const DoctorDetails())),
           )),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -61,13 +64,13 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
           children: [
             const Text('Experience certificate',
                 style: CustomTextStyle.buttonTextStyle),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               child: Stack(
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: seletedImage == null
+                    child: _image == null
                         ? Container(
                             width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height * 0.35,
@@ -80,7 +83,7 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
                             ),
                           )
                         : Image.file(
-                            seletedImage!,
+                            _image!,
                             width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height * 0.35,
                             fit: BoxFit.cover,
@@ -91,9 +94,9 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
                     child: IconButton(
                       color: Colors.black,
                       onPressed: () {
-                        imagepicker();
+                        pickAndUploadImage(context);
                       },
-                      icon: Icon(Icons.add), // Corrected icon usage
+                      icon: const Icon(Icons.add), // Corrected icon usage
                     ),
                   )
                 ],
@@ -105,26 +108,25 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
-          DoctorModel doctor = DoctorModel(
-            imagepath: widget.imagepath,
-            expcerft: seletedImage!.path,
-            name: widget.name,
-            phone: widget.phone,
-            gender: widget.gender,
-            birthday: widget.birthday,
-            specialization: widget.specialization,
-            email: widget.email,
-            password: widget.password,
-            uid: widget.uid,
-          );
-
-          await DoctorRepository().saveDoctorData(doctor);
-          if (seletedImage != null) {
+          if (_image != null) {
+            DoctorModel doctor = DoctorModel(
+              imagepath: widget.imagepath,
+              expcerft: _image!.path, // This line was causing the error
+              name: widget.name,
+              phone: widget.phone,
+              gender: widget.gender,
+              birthday: widget.birthday,
+              specialization: widget.specialization,
+              email: widget.email,
+              password: widget.password,
+              uid: widget.uid,
+            );
+            await DoctorRepository().saveDoctorData(doctor);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => const BottombarScreens(),
             ));
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.red,
               content: Text('Certificate not added'),
             ));
@@ -142,25 +144,39 @@ class _DocumentDetailesState extends State<DocumentDetailes> {
     );
   }
 
-  Future imagepicker() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) return;
-    setState(() {
-      seletedImage = File(pickedImage.path);
-    });
+  Future<String?> pickAndUploadImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    // Generate a unique filename for the image
-    String uniqueFilename = DateTime.now().microsecondsSinceEpoch.toString();
-    // Create a reference to the location you want to upload to in Firebase Storage
-    Reference reference =
-        FirebaseStorage.instance.ref().child('images/$uniqueFilename');
-    // Upload the file to Firebase Storage
-    UploadTask uploadTask = reference.putFile(seletedImage!);
-    // Wait for the upload to complete and then get the download URL
-    TaskSnapshot taskSnapshot = await uploadTask;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-    // You can now use the downloadUrl for further processing, such as saving it to Firestore
-    print("Download URL: $downloadUrl");
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+
+      // Upload the image to Firebase Storage
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('images/${_image!.path.split('/').last}');
+      await ref.putFile(_image!);
+
+      // Retrieve the image URL
+      final url = await ref.getDownloadURL();
+      print('Image URL: $url');
+
+      // Store the image URL in Firestore
+      // final firestore = FirebaseFirestore.instance;
+      // await firestore.doc('0').set(im
+
+      // )
+
+      // return url;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No image selected.')),
+      );
+      print('No image selected.');
+      return null;
+    }
+    return null;
   }
 }

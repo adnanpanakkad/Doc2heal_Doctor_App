@@ -4,10 +4,10 @@ import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationRepository {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static User? doctor = FirebaseAuth.instance.currentUser;
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+   User? doctor = FirebaseAuth.instance.currentUser;
 
-  static Future<String?> userEmailSignup(String email, String password) async {
+   Future<String?> userEmailSignup(String email, String password) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -20,7 +20,7 @@ class AuthenticationRepository {
     }
   }
 
-  static Future<String?> userEmailLogin(String email, String password) async {
+   Future<String?> userEmailLogin(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -35,6 +35,4 @@ class AuthenticationRepository {
       throw Exception('User Email Login Error: $e');
     }
   }
-
-  static signUpWithEmailAndPassword(text, text2) {}
 }

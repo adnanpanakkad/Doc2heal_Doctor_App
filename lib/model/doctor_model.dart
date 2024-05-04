@@ -1,14 +1,14 @@
 class DoctorModel {
   String? imagepath;
   String? expcerft;
-  final String name;
-  final String phone;
-  final String gender;
-  final String birthday;
-  final String specialization;
-  final String email;
-  final String password;
-   String? uid;
+  final String? name;
+  final String? phone;
+  final String? gender;
+  final String? birthday;
+  final String? specialization;
+  final String? email;
+  final String? password;
+  final String? uid;
 
   DoctorModel({
     this.imagepath,
@@ -20,7 +20,7 @@ class DoctorModel {
     required this.specialization,
     required this.email,
     required this.password,
-     this.uid,
+    required this.uid,
   });
 
   // Factory constructor to create UserModel from JSON data

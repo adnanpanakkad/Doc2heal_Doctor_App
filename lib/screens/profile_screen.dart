@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +14,17 @@ class ProfileScreen extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 70),
         child: DeatialAppbar(text: 'Doctor profile'),
       ),
-      body: FutureBuilder<DoctorModel?>(
-        future: DoctorRepository().getDoctorDetails('email'),
-        builder: (BuildContext context, AsyncSnapshot<DoctorModel?> snapshot) {
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: DoctorRepository().getDoctorDetails(
+            'doctorId'), // Assuming 'doctorId' is the unique identifier
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            DoctorModel doctorData = snapshot.data!;
+          } else if (snapshot.hasData && snapshot.data!.exists) {
+            DocumentSnapshot doctorData = snapshot.data!;
             return Column(
               children: <Widget>[
                 Expanded(
@@ -30,51 +33,51 @@ class ProfileScreen extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 65,
-                        backgroundImage: doctorData.imagepath != null
-                            ? NetworkImage(doctorData.imagepath!)
-                            : const AssetImage("assets/Ellipse 1.png")
-                                as ImageProvider,
+                        backgroundImage:
+                            NetworkImage(doctorData.get('imagepath')),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Name'),
-                          subtitle: Text(doctorData.name),
+                          subtitle: Text(doctorData.get('name') ?? 'N/A'),
                         ),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Birthday'),
-                          subtitle: Text(doctorData.birthday),
+                          subtitle: Text(doctorData.get('birthday') ?? 'N/A'),
                         ),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Specialization'),
-                          subtitle: Text(doctorData.specialization),
+                          subtitle:
+                              Text(doctorData.get('specialization') ?? 'N/A'),
                         ),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Email'),
-                          subtitle: Text(doctorData.email),
+                          subtitle: Text(doctorData.get('email') ?? 'N/A'),
                         ),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Gender'),
-                          subtitle: Text(doctorData.gender),
+                          subtitle: Text(doctorData.get('gender') ?? 'N/A'),
                         ),
                       ),
                       Card(
                         child: ListTile(
                           title: const Text('Phone'),
-                          subtitle: Text(doctorData.phone),
+                          subtitle: Text(doctorData.get('phone') ?? 'N/A'),
                         ),
                       ),
                       Container(
-                          height: 150,
-                          width: 200,
-                          child: Image.network(doctorData.expcerft!)),
+                        height: 150,
+                        width: 200,
+                        child: Image.network(doctorData.get('expcerft') ?? ''),
+                      ),
                     ],
                   ),
                 ),

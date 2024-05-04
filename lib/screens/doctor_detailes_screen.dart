@@ -4,11 +4,11 @@ import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
-import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
 import 'package:doc2heal_doctor/utils/validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -237,8 +237,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
           if (formKey.currentState!.validate()) {
-            String? uid = await AuthenticationRepository.userEmailSignup(
-                _emailController.text, _passwordController.text);
+            dynamic uid = await AuthenticationRepository().userEmailSignup(
+                _emailController.text.trim(), _passwordController.text.trim());
             if (uid != null) {
               DoctorModel doctor = DoctorModel(
                   imagepath: _image!.path,
@@ -310,6 +310,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       print('No image selected.');
       return null;
     }
+    return null;
   }
 
   Future<void> _getTimeFromUser(BuildContext context) async {

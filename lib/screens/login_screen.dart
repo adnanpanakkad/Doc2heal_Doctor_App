@@ -7,6 +7,7 @@ import 'package:doc2heal_doctor/widgets/common/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/common/rich_text.dart';
 import 'package:doc2heal_doctor/widgets/text_feildes.dart/text_feild.dart';
 import 'package:doc2heal_doctor/utils/validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,9 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+ 
 
   @override
   void initState() {
@@ -89,16 +88,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
                             String? uid =
-                                await AuthenticationRepository.userEmailLogin(
-                                    emailController.text,
-                                    passwordController.text);
-                            if (uid != null) {
-                              // Login successful, handle navigation or any other actions
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          BottombarScreens()));
-                            }
+                                await AuthenticationRepository().userEmailLogin(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim());
+
+                            // Login successful, handle navigation or any other actions
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => BottombarScreens()));
                           }
                         }),
                     InkWell(
