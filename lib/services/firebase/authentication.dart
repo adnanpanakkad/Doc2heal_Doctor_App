@@ -27,7 +27,7 @@ class AuthenticationRepository {
       log('User logged in');
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
-      doctor != null ? const BottombarScreens() : const LoginScreen();
+      doctor != null ? const BottombarScreens() :  LoginScreen();
       log('User Email Login Error: ${e.message}');
       throw Exception('User Email Login Error: ${e.message}');
     } catch (e) {
