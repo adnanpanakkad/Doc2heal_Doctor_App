@@ -1,4 +1,4 @@
-import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
+import 'package:doc2heal_doctor/screens/signup_screen.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/widgets/common/button.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 30),
                     alignment: Alignment.topLeft,
-                    child: Text("Welcome to the\n driver app",
+                    child: Text("Welcome to the\n doctor app",
                         style: GoogleFonts.urbanist(
                             color: Color.fromARGB(255, 10, 2, 2),
                             fontSize: 36,
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                     onTap: () {
                       // Get.to(SignUp());
                       Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (ctx) => DoctorDetails()));
+                          MaterialPageRoute(builder: (ctx) => SignupScreen()));
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),

@@ -1,4 +1,5 @@
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +37,9 @@ class LoginController extends GetxController {
 
   loginDoctor() async {
     if (formKey.currentState!.validate()) {
-      Get.offAll(() => BottombarScreens());
+      AuthenticationRepository().userEmailLogin(
+          emailController.text.trim(), passwordController.text.trim());
+      Get.offAll(() => const BottombarScreens());
     }
   }
 }

@@ -1,47 +1,21 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc2heal_doctor/model/doctor_model.dart';
+
+import 'package:doc2heal_doctor/controller/signup_controller.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
-import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';
-import 'package:doc2heal_doctor/utils/validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class DoctorDetails extends StatefulWidget {
-  const DoctorDetails({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
 
-  @override
-  State<DoctorDetails> createState() => _DoctorDetailsState();
-}
-
-class _DoctorDetailsState extends State<DoctorDetails> {
-  String? selectedGender;
-  File? _image;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
-  final TextEditingController _birthController = TextEditingController();
-  final TextEditingController _specializationController =
-      TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  void selectGender(String? newValue) {
-    setState(() {
-      selectedGender = newValue ?? 'None';
-      _genderController.text = selectedGender!;
-    });
-  }
-
+  final DateTime _selectedDate = DateTime.now();
+  final SignupController controller = Get.put(SignupController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +27,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const WelcomeScreen())),
           )),
-      body: Form(
-        key: formKey,
-        child: ListView(
+      body: Obx(
+        () => ListView(
           children: [
             const SizedBox(height: 10),
             Padding(
@@ -97,9 +70,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                             children: [
                               CircleAvatar(
                                 radius: 55,
-                                backgroundImage: _image == null
+                                backgroundImage: controller
+                                            .isProfiepathSet.value ==
+                                        false
                                     ? const AssetImage('assets/Ellipse 1.png')
-                                    : FileImage(_image!) as ImageProvider,
+                                    : FileImage(File(
+                                            controller.profilepicPath.value))
+                                        as ImageProvider,
                               ),
                               Container(
                                 decoration: BoxDecoration(
@@ -115,7 +92,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 ),
                                 child: InkWell(
                                   onTap: () async {
-                                    pickAndUploadImage(context);
+                                    controller.imagepicker();
                                   },
                                   child: const CircleAvatar(
                                     radius: 20,
@@ -136,17 +113,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     const SizedBox(height: 20),
                     DetailTile(
                       validator: (value) =>
-                          Validator().textFeildValidation(value),
+                          controller.textFeildValidation(value),
                       keyboardType: TextInputType.emailAddress,
-                      controllers: _nameController,
+                      controllers: controller.nameController,
                       sub: 'full name',
                       hittext: 'Enter your full name',
                     ),
                     DetailTile(
                       validator: (value) =>
-                          Validator().textFeildValidation(value),
+                          controller.textFeildValidation(value),
                       keyboardType: TextInputType.number,
-                      controllers: _phoneController,
+                      controllers: controller.phoneController,
                       sub: 'Phone number',
                       hittext: 'Enter your phone number',
                     ),
@@ -154,50 +131,47 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       height: 5,
                     ),
                     DetailTile(
-                      validator: (value) =>
-                          Validator().textFeildValidation(value),
-                      controllers: _genderController,
+                      controllers: controller.genderController,
                       sub: 'Gender',
-                      hittext: "select gender",
+                      hittext: controller.selectRepeat.value,
                       suffixicon: DropdownButton(
-                          value: selectedGender,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconDisabledColor:
-                              const Color.fromARGB(252, 103, 103, 103),
-                          items: [
-                            "Male",
-                            "Female",
-                            "Other"
-                          ] // Update options here
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: selectGender),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconDisabledColor:
+                            const Color.fromARGB(252, 103, 103, 103),
+                        items: controller.selectRepeatList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value.toString(),
+                            child: Text(value.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          controller.selectGender(newValue!);
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     DetailTile(
+                      controllers: controller.birthController,
                       sub: 'Birthday',
-                      hittext: _birthController.text.isEmpty
-                          ? 'Select your birthday'
-                          : _birthController.text,
-                    ),
-                    GestureDetector(
-                      onTap: () async => _getTimeFromUser(context),
-                      child: const Icon(Icons.calendar_month),
+                      hittext:
+                          DateFormat.yMd().format(_selectedDate).toString(),
+                      suffixicon: IconButton(
+                          onPressed: () {
+                            controller.getTimeFromUser(context);
+                          },
+                          icon: const Icon(Icons.calendar_month)),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     DetailTile(
                       validator: (value) =>
-                          Validator().textFeildValidation(value),
+                          controller.textFeildValidation(value),
                       keyboardType: TextInputType.emailAddress,
-                      controllers: _specializationController,
+                      controllers: controller.specializController,
                       sub: 'specialization',
                       hittext: 'Enter your specialization',
                     ),
@@ -205,10 +179,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       height: 5,
                     ),
                     DetailTile(
-                      validator: (value) =>
-                          Validator().textFeildValidation(value),
+                      validator: (value) => controller.validateEmail(value),
                       keyboardType: TextInputType.emailAddress,
-                      controllers: _emailController,
+                      controllers: controller.emailController,
                       sub: 'Email',
                       hittext: 'Enter your email address',
                     ),
@@ -216,10 +189,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       height: 5,
                     ),
                     DetailTile(
-                      validator: (value) =>
-                          Validator().textFeildValidation(value),
+                      validator: (value) => controller.validatePassword(value),
                       keyboardType: TextInputType.emailAddress,
-                      controllers: _passwordController,
+                      controllers: controller.passwordController,
                       sub: 'Password',
                       hittext: 'Enter your Password',
                     ),
@@ -235,36 +207,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
-        onPressed: () async {
-          if (formKey.currentState!.validate()) {
-            dynamic uid = await AuthenticationRepository().userEmailSignup(
-                _emailController.text.trim(), _passwordController.text.trim());
-            if (uid != null) {
-              DoctorModel doctor = DoctorModel(
-                  imagepath: _image!.path,
-                  name: _nameController.text.trim(),
-                  phone: _phoneController.text.trim(),
-                  gender: _genderController.text.trim(),
-                  birthday: _birthController.text.trim(),
-                  specialization: _specializationController.text.trim(),
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                  uid: uid);
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DocumentDetailes(
-                  imagepath: _image!.path,
-                  name: _nameController.text.trim(),
-                  phone: _phoneController.text.trim(),
-                  gender: _genderController.text.trim(),
-                  birthday: _birthController.text.trim(),
-                  specialization: _specializationController.text.trim(),
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                ),
-              ));
-            }
-          }
-        },
+        onPressed: () => controller.signup(),
         label: const SizedBox(
           child: Row(
             children: [
@@ -275,55 +218,5 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         ),
       ),
     );
-  }
-
-  Future<String?> pickAndUploadImage(BuildContext context) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      setState(() {
-        _image = File(image.path);
-      });
-
-      // Upload the image to Firebase Storage
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('images/${_image!.path.split('/').last}');
-      await ref.putFile(_image!);
-
-      // Retrieve the image URL
-      final url = await ref.getDownloadURL();
-      print('Image URL: $url');
-
-      // Store the image URL in Firestore
-      // final firestore = FirebaseFirestore.instance;
-      // await firestore.doc('0').set(im
-
-      // )
-
-      // return url;
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No image selected.')),
-      );
-      print('No image selected.');
-      return null;
-    }
-    return null;
-  }
-
-  Future<void> _getTimeFromUser(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        _birthController.text = DateFormat.yMd().format(pickedDate);
-      });
-    }
   }
 }

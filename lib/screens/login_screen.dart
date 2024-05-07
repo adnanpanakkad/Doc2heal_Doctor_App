@@ -1,5 +1,5 @@
 import 'package:doc2heal_doctor/controller/login_controller.dart';
-import 'package:doc2heal_doctor/screens/doctor_detailes_screen.dart';
+import 'package:doc2heal_doctor/screens/signup_screen.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/common/custom_button.dart';
 import 'package:doc2heal_doctor/widgets/common/rich_text.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
   LoginController controller = Get.put(LoginController());
+  LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(() => const DoctorDetails());
+                        Get.to(() => SignupScreen());
                       },
                       child: richText(
                         context: context,
