@@ -53,20 +53,21 @@ class SignupController extends GetxController {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      final String uid = userCredential.user!.uid;
-      final DoctorModel doctor = DoctorModel(
-        profilepic: profilepic.value,
-        name: nameController.text.trim(),
-        phone: phoneController.text.trim(),
-        gender: genderController.text.trim(),
-        birthday: birthController.text.trim(),
-        specialization: specializController.text.trim(),
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-        uid: uid,
-      );
-      // Navigate to the next screen
-      Get.offAll(() => DocumentDetails());
+      final doctor = DoctorModel(
+          profilepic: profilepic.value,
+          name: nameController.text.trim(),
+          phone: phoneController.text.trim(),
+          gender: genderController.text.trim(),
+          birthday: birthController.text.trim(),
+          specialization: specializController.text.trim(),
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+          uid: userCredential.user!.uid);
+
+      final uid = await DoctorRepository().saveDoctorData(doctor);
+      if (uid != null) {
+        doctor.uid = uid as String?;
+      }
     } catch (e) {
       // Handle error
       print("Error signing up: $e");

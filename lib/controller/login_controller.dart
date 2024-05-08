@@ -27,7 +27,7 @@ class LoginController extends GetxController {
     return null;
   }
 
-  textFeildValidation(String value) {
+  textFeildValidation(String value){
     if (value.isEmpty) {
       return "Fill the field";
     } else {

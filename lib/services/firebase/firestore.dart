@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DoctorRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<void> saveDoctorData(DoctorModel doctor) async {
+  Future<DoctorModel?> saveDoctorData(DoctorModel doctor) async {
     try {
       DocumentReference docRef =
           await _db.collection("doctor").add(doctor.toJson());

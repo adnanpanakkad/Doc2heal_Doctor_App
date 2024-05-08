@@ -8,7 +8,7 @@ class DoctorModel {
   final String? specialization;
   final String? email;
   final String? password;
-  final String? uid;
+  late final String? uid;
 
   DoctorModel({
     required this.profilepic,
