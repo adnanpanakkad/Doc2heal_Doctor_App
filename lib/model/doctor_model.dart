@@ -38,6 +38,18 @@ class DoctorModel {
       uid: json['uid'],
     );
   }
+  factory DoctorModel.emptyDoctorModel() {
+    return DoctorModel(
+        profilepic: '',
+        name: '',
+        phone: '',
+        gender: '',
+        birthday: '',
+        specialization: '',
+        email: '',
+        password: '',
+        uid: '');
+  }
   Map<String, dynamic> toJson() {
     return {
       'profilepic': profilepic,

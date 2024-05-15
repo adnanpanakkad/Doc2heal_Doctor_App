@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
+import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +13,7 @@ import 'package:intl/intl.dart';
 
 class SignupController extends GetxController {
   //User data
-
+  GlobalKey<FormState> signupformKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
@@ -35,25 +37,35 @@ class SignupController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   //gender handling
   RxString selectRepeat = 'None'.obs;
-  final List<String> selectRepeatList = [
-    'None',
-    'Male',
-    'Female',
-  ];
+  final List<String> selectRepeatList = ['None', 'Male', 'Female'];
   selectGender(newvalue) {
     selectRepeat.value = newvalue;
     genderController.text = newvalue;
   }
 
-  Future<void> signup() async {
-    try {
-      isLoading.value = true;
-      final UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      final doctor = DoctorModel(
+//category
+  RxString specializ = 'cardiology'.obs;
+  final List<String> specializlist = [
+    'Cardiology',
+    'Neurology',
+    'Gynecology',
+    'Pediatrics',
+  ];
+  selectSpecializ(specializValue) {
+    specializ.value = specializValue;
+    specializController.text = specializValue;
+  }
+
+  Future<DoctorModel?> signup() async {
+    if (signupformKey.currentState!.validate()) {
+      try {
+        isLoading.value = true;
+        final UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        final doctor = DoctorModel(
           profilepic: profilepic.value,
           name: nameController.text.trim(),
           phone: phoneController.text.trim(),
@@ -62,18 +74,20 @@ class SignupController extends GetxController {
           specialization: specializController.text.trim(),
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
-          uid: userCredential.user!.uid);
-
-      final uid = await DoctorRepository().saveDoctorData(doctor);
-      if (uid != null) {
-        doctor.uid = uid as String?;
+          uid: userCredential.user!.uid,
+        );
+        await DoctorRepository().saveDoctorData(doctor);
+        Get.to(() => DocumentDetails(doctor: doctor));
+        return doctor;
+      } catch (e) {
+        // Handle error
+        print("Error signing up: $e");
+        return null;
+      } finally {
+        isLoading.value = false;
       }
-    } catch (e) {
-      // Handle error
-      print("Error signing up: $e");
-    } finally {
-      isLoading.value = false;
     }
+    return null;
   }
 
 //validation
@@ -123,7 +137,9 @@ class SignupController extends GetxController {
 //image selector
   final ImagePicker imagePicker = ImagePicker();
   var isProfiepathSet = false.obs;
+  var isexpcerftpathSet = false.obs;
   RxString profilepicPath = ''.obs;
+  RxString expcerftpath = ''.obs;
   var imageUrl = ''.obs;
   imagepicker() async {
     final pickedImage =
@@ -148,7 +164,7 @@ class SignupController extends GetxController {
     String uniqueName = DateTime.now().millisecond.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
-        firebaseRootReference.child('myPictures$uniqueName.png');
+        firebaseRootReference.child('myPic$uniqueName.png');
     try {
       await toUploadImgReference.putFile(File(image));
       url = await toUploadImgReference.getDownloadURL();
@@ -158,4 +174,5 @@ class SignupController extends GetxController {
 
     return url;
   }
+
 }

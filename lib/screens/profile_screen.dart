@@ -1,92 +1,55 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc2heal_doctor/model/doctor_model.dart';
-import 'package:doc2heal_doctor/services/firebase/firestore.dart';
-import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:doc2heal_doctor/controller/doctor_controller.dart';
+import 'package:doc2heal_doctor/controller/signup_controller.dart';
+import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size(double.maxFinite, 70),
-        child: DeatialAppbar(text: 'Doctor profile'),
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: DoctorRepository().getDoctorDetails(
-            'doctorId'), // Assuming 'doctorId' is the unique identifier
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data!.exists) {
-            DocumentSnapshot doctorData = snapshot.data!;
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.all(16.0),
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 65,
-                        backgroundImage:
-                            NetworkImage(doctorData.get('imagepath')),
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final DoctorController doctorController = Get.put(
+        DoctorController()); // Retrieve the existing instance of DoctrController
+
+    return SafeArea(
+      child: Scaffold(
+        body: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight * 0.05),
+              const CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage(
+                    'assets/Ellipse 1.png'), // Ensure this asset exists
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              Text(doctorController.doctor.value.name!,
+                  style: TextStyle(color: Colors.black)),
+              SizedBox(
+                  height: screenHeight *
+                      0.02), // Added spacing between name and phone
+              SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      doctorController.doctor.value.phone!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Name'),
-                          subtitle: Text(doctorData.get('name') ?? 'N/A'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Birthday'),
-                          subtitle: Text(doctorData.get('birthday') ?? 'N/A'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Specialization'),
-                          subtitle:
-                              Text(doctorData.get('specialization') ?? 'N/A'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Email'),
-                          subtitle: Text(doctorData.get('email') ?? 'N/A'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Gender'),
-                          subtitle: Text(doctorData.get('gender') ?? 'N/A'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Phone'),
-                          subtitle: Text(doctorData.get('phone') ?? 'N/A'),
-                        ),
-                      ),
-                      Container(
-                        height: 150,
-                        width: 200,
-                        child: Image.network(doctorData.get('expcerft') ?? ''),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            );
-          } else {
-            return const Center(child: Text('No data available.'));
-          }
-        },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

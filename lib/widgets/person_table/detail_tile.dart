@@ -45,6 +45,7 @@ class DetailTile extends StatelessWidget {
                     flex: 2,
                     child: SizedBox(
                         child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: keyboardType,
                       validator: validator,
                       controller: controllers,
@@ -70,9 +71,9 @@ class DetailTile extends StatelessWidget {
                           ),
                           contentPadding: suffixicon == null
                               ? const EdgeInsets.only(
-                                  left: 50,
+                                  left: 10,
                                 )
-                              : const EdgeInsets.only(left: 50, top: 10)),
+                              : const EdgeInsets.only(left: 10, top: 10)),
                     )))
               ],
             ),
@@ -81,7 +82,8 @@ class DetailTile extends StatelessWidget {
         const Divider(
           height: 0,
           thickness: 0.5,
-          indent: 12,
+          indent: 10,
+          endIndent: 10,
           color: Color.fromARGB(255, 170, 170, 170),
         )
       ],

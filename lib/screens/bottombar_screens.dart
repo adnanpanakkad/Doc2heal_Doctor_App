@@ -1,3 +1,4 @@
+import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/screens/profile_screen.dart';
 import 'package:doc2heal_doctor/screens/schedule_screen.dart';
@@ -15,7 +16,7 @@ class __BottombarScreensState extends State<BottombarScreens> {
   final List<Widget> _pages = [
     const ScheduleScreen(),
     const ChatScreen(),
-    const ProfileScreen()
+    ProfileScreen(),
   ];
 
   @override

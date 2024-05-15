@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-
-import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

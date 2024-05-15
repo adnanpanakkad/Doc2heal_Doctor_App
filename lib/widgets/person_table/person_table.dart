@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/text_feildes.dart/detail_text_feilde.dart';
 import 'package:flutter/material.dart';

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> loginformKey = GlobalKey<FormState>();
 
   validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -27,7 +27,7 @@ class LoginController extends GetxController {
     return null;
   }
 
-  textFeildValidation(String value){
+  textFeildValidation(String value) {
     if (value.isEmpty) {
       return "Fill the field";
     } else {
@@ -36,10 +36,12 @@ class LoginController extends GetxController {
   }
 
   loginDoctor() async {
-    if (formKey.currentState!.validate()) {
-      AuthenticationRepository().userEmailLogin(
-          emailController.text.trim(), passwordController.text.trim());
+    if (loginformKey.currentState!.validate()) {
+      AuthenticationRepository().doctorEmailLogin(
+          emailController.text.toString(), passwordController.text.toString());
       Get.offAll(() => const BottombarScreens());
+    } else {
+      Get.snackbar('error', 'invalid password or email');
     }
   }
 }
