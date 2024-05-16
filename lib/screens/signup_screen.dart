@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:doc2heal_doctor/controller/signup_controller.dart';
+import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
@@ -24,8 +25,7 @@ class SignupScreen extends StatelessWidget {
           preferredSize: const Size(double.maxFinite, 70),
           child: DeatialAppbar(
             text: 'Doctor Details',
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const WelcomeScreen())),
+            onTap: () => Get.back(),
           )),
       body: Obx(
         () => ListView(
@@ -230,10 +230,7 @@ class SignupScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
-          controller.profilepicPath.value.isNotEmpty
-              ? controller.signup()
-              : Get.snackbar('Warning', 'Please select an image',
-                  colorText: Colors.red);
+          controller.signup();
         },
         label: const SizedBox(
           child: Row(

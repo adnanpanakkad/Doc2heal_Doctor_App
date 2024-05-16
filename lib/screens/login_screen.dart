@@ -81,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                       child: richText(
                         context: context,
                         firstTxt: "Don't have an account? ",
-                        secondTxt: "create your account",
+                        secondTxt: "create account",
                       ),
                     )
                   ],

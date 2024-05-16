@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doc2heal_doctor/controller/doctor_controller.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
@@ -13,6 +14,9 @@ import 'package:intl/intl.dart';
 
 class SignupController extends GetxController {
   //User data
+  DoctorRepository doctorRepository = Get.put(DoctorRepository());
+  AuthenticationRepository authenticationRepository =
+      Get.put(AuthenticationRepository());
   GlobalKey<FormState> signupformKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -60,11 +64,8 @@ class SignupController extends GetxController {
     if (signupformKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        final UserCredential userCredential =
-            await _auth.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
+        final userCredential = await authenticationRepository.doctorSignup(
+            emailController.text, passwordController.text);
         final doctor = DoctorModel(
           profilepic: profilepic.value,
           name: nameController.text.trim(),
@@ -74,11 +75,12 @@ class SignupController extends GetxController {
           specialization: specializController.text.trim(),
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
-          uid: userCredential.user!.uid,
+          id: userCredential,
         );
-        await DoctorRepository().saveDoctorData(doctor);
-        Get.to(() => DocumentDetails(doctor: doctor));
+
+        await Get.to(() => DocumentDetails(doctor: doctor));
         return doctor;
+        
       } catch (e) {
         // Handle error
         print("Error signing up: $e");
@@ -174,5 +176,4 @@ class SignupController extends GetxController {
 
     return url;
   }
-
 }

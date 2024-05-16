@@ -1,27 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
+import 'package:get/get.dart';
 
-class DoctorRepository {
+class DoctorRepository extends GetxController {
+  AuthenticationRepository authenticationRepository =
+      Get.put(AuthenticationRepository());
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<DoctorModel?> saveDoctorData(DoctorModel doctor) async {
+  Future<DoctorModel?> saveDoctorData(DoctorModel doctor, String id) async {
     try {
-      DocumentReference docRef =
-          await _db.collection("doctor").add(doctor.toJson());
-      print("Document added with ID: ${docRef.id}");
+      await _db.collection("doctor").doc(id).set(doctor.toJson());
     } catch (e) {
       throw 'not saved';
     }
     return null;
   }
 
-  Future<DocumentSnapshot> getDoctorDetails(String uid) async {
+  Future<DocumentSnapshot> getDoctorDetails(String id) async {
     try {
-      final snapshot = await _db
-          .collection("doctor")
-          .doc(AuthenticationRepository().authUser!.uid)
-          .get();
+      DocumentSnapshot snapshot = await _db.collection("doctor").doc(id).get();
+      // final snapshot = await _db
+      //     .collection("doctor")
+      //     .doc(authenticationRepository.authUser!.uid)
+      //     .get();
       return snapshot;
     } catch (e) {
       throw Exception(e);

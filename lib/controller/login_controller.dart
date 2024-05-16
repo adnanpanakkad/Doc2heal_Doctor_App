@@ -7,7 +7,8 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   GlobalKey<FormState> loginformKey = GlobalKey<FormState>();
-
+  AuthenticationRepository authenticationRepository =
+      Get.put(AuthenticationRepository());
   validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter an email address';
@@ -37,7 +38,7 @@ class LoginController extends GetxController {
 
   loginDoctor() async {
     if (loginformKey.currentState!.validate()) {
-      AuthenticationRepository().doctorEmailLogin(
+      authenticationRepository.doctorLogin(
           emailController.text.toString(), passwordController.text.toString());
       Get.offAll(() => const BottombarScreens());
     } else {

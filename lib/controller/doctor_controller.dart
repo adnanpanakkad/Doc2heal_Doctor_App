@@ -7,49 +7,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DoctorController extends GetxController {
-  // static UserController get instance => Get.find();
   Rx<DoctorModel> doctor = DoctorModel.emptyDoctorModel().obs;
+  final name = TextEditingController();
+  final phone = TextEditingController();
+
   SignupController signupController = Get.put(SignupController());
+  DoctorRepository doctorRepository = Get.put(DoctorRepository());
+  AuthenticationRepository authenticationRepository =
+      Get.put(AuthenticationRepository());
 
   @override
   void onReady() async {
     await getDoctorRecord();
-    signupController.nameController.text = doctor.value.name!;
-    signupController.phoneController.text = doctor.value.phone!;
+    name.text = doctor.value.name!;
+    phone.text = doctor.value.phone!;
     super.onReady();
   }
 
   Future<void> getDoctorRecord() async {
     try {
-      var authenticationRepository = Get.put(AuthenticationRepository());
-
       final authUser = authenticationRepository.authUser;
-      var userRepository = Get.put(DoctorRepository());
 
       if (authUser != null) {
-        final doctorId = await userRepository
-            .getDoctorDetails(authenticationRepository.authUser!.uid);
+        final doctordata =
+            await doctorRepository.getDoctorDetails(authUser.uid);
+        final doctorModel = DoctorModel.fromSnapshot(
+            doctordata); // Convert DocumentSnapshot to DoctorModel
+        doctor(doctorModel);
       }
     } catch (e) {
-      // doctor(DoctorModel.emptyDoctorModel);
+      doctor(DoctorModel.emptyDoctorModel());
       log("getUserRecord failed");
       log(e.toString());
     }
   }
-
-  // Future<void> updateUser() async {
-  //   try {
-  //     var userModel = UserModel(
-  //         name: name.text,
-  //         number: number.text,
-  //         email: user.value.email,
-  //         profile: user.value.profile,
-  //         isUser: user.value.isUser);
-  //     await UserRepository().updateUserField(userMdel: userModel);
-  //     user.value = userModel;
-  //   } catch (e) {
-  //     log('updateUser:$e');
-  //     CustomSnackbar.showError(e.toString());
-  //   }
-  // }
 }

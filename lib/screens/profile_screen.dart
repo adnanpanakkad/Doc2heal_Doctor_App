@@ -1,7 +1,9 @@
 import 'package:doc2heal_doctor/controller/doctor_controller.dart';
-import 'package:doc2heal_doctor/controller/signup_controller.dart';
-import 'package:doc2heal_doctor/utils/text_style.dart';
+import 'package:doc2heal_doctor/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -11,8 +13,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final DoctorController doctorController = Get.put(
-        DoctorController()); // Retrieve the existing instance of DoctrController
+    final DoctorController doctorController = Get.put(DoctorController());
+    // Retrieve the existing instance of DoctrController
 
     return SafeArea(
       child: Scaffold(
@@ -22,11 +24,11 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: screenHeight * 0.05),
-              const CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage(
-                    'assets/Ellipse 1.png'), // Ensure this asset exists
-              ),
+              // const CircleAvatar(
+              //   radius: 60,
+              //   backgroundImage: NetworkImage(do
+              //       ), // Ensure this asset exists
+              // ),
               SizedBox(height: screenHeight * 0.02),
               Text(doctorController.doctor.value.name!,
                   style: TextStyle(color: Colors.black)),
@@ -47,6 +49,14 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              Card(
+                child: IconButton(
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Get.to(() => LoginScreen());
+                    },
+                    icon: Icon(Icons.logout)),
+              )
             ],
           ),
         ),

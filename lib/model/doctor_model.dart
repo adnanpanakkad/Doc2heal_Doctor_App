@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class DoctorModel {
   final String? profilepic;
   String? expcerft;
@@ -8,7 +10,7 @@ class DoctorModel {
   final String? specialization;
   final String? email;
   final String? password;
-  late final String? uid;
+  late final String? id;
 
   DoctorModel({
     required this.profilepic,
@@ -20,24 +22,28 @@ class DoctorModel {
     required this.specialization,
     required this.email,
     required this.password,
-    required this.uid,
+    required this.id,
   });
 
   // Factory constructor to create UserModel from JSON data
-  factory DoctorModel.fromJson(Map<String, dynamic> json) {
+
+  factory DoctorModel.fromSnapshot(DocumentSnapshot<Object?> snapshot) {
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+
     return DoctorModel(
-      profilepic: json['profilepic'],
-      expcerft: json['expcerft'],
-      name: json['name'],
-      phone: json['phone'],
-      gender: json['gender'],
-      birthday: json['birthday'],
-      specialization: json['specialization'],
-      email: json['email'],
-      password: json['password'],
-      uid: json['uid'],
+      profilepic: data?['profilepic'] ?? '',
+      expcerft: data?['expcerft'] ?? '',
+      name: data?['name'] ?? '',
+      phone: data?['phone'] ?? '',
+      gender: data?['gender'] ?? '',
+      birthday: data?['birthday'] ?? '',
+      specialization: data?['specialization'] ?? '',
+      email: data?['email'] ?? '',
+      password: data?['password'] ?? '',
+      id: data?['id'] ?? '',
     );
   }
+
   factory DoctorModel.emptyDoctorModel() {
     return DoctorModel(
         profilepic: '',
@@ -48,7 +54,7 @@ class DoctorModel {
         specialization: '',
         email: '',
         password: '',
-        uid: '');
+        id: '');
   }
   Map<String, dynamic> toJson() {
     return {
@@ -61,7 +67,7 @@ class DoctorModel {
       'specialization': specialization,
       'email': email,
       'password': password,
-      'uid': uid,
+      'uid': id,
     };
   }
 }

@@ -6,11 +6,13 @@ import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DocumentDetails extends StatelessWidget {
   final DocumentController controller = Get.put(DocumentController());
+  final DoctorRepository doctorRepository = Get.find();
   final DoctorModel doctor;
   DocumentDetails({super.key, required this.doctor});
 
@@ -76,10 +78,11 @@ class DocumentDetails extends StatelessWidget {
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
           if (controller.expcerftpath.value.isNotEmpty) {
-            await DoctorRepository().saveDoctorData(doctor);
+            await doctorRepository.saveDoctorData(doctor, doctor.id!);
             Get.offAll(() => BottombarScreens());
           } else {
-            Get.snackbar('Warning', 'Please select an image',colorText: Colors.red);
+            Get.snackbar('Warning', 'Please select an image',
+                colorText: Colors.red);
           }
         },
         label: const SizedBox(
