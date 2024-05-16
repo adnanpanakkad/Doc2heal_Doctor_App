@@ -79,8 +79,8 @@ class SignupController extends GetxController {
         );
 
         await Get.to(() => DocumentDetails(doctor: doctor));
+
         return doctor;
-        
       } catch (e) {
         // Handle error
         print("Error signing up: $e");

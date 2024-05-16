@@ -41,6 +41,8 @@ class LoginController extends GetxController {
       authenticationRepository.doctorLogin(
           emailController.text.toString(), passwordController.text.toString());
       Get.offAll(() => const BottombarScreens());
+      emailController.clear();
+      passwordController.clear();
     } else {
       Get.snackbar('error', 'invalid password or email');
     }
