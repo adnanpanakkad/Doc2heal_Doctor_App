@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DoctorController extends GetxController {
+  
   Rx<DoctorModel> doctor = DoctorModel.emptyDoctorModel().obs;
   final name = TextEditingController();
-  final phone = TextEditingController();
+  final email = TextEditingController();
 
   SignupController signupController = Get.put(SignupController());
   DoctorRepository doctorRepository = Get.put(DoctorRepository());
@@ -20,7 +21,7 @@ class DoctorController extends GetxController {
   void onReady() async {
     await getDoctorRecord();
     name.text = doctor.value.name!;
-    phone.text = doctor.value.phone!;
+    email.text = doctor.value.email!;
     super.onReady();
   }
 
