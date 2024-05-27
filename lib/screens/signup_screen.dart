@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:doc2heal_doctor/controller/signup_controller.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
+import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
@@ -25,7 +26,7 @@ class SignupScreen extends StatelessWidget {
           preferredSize: const Size(double.maxFinite, 70),
           child: DeatialAppbar(
             text: 'Doctor Details',
-            onTap: () => Get.back(),
+            onTap: () => Get.to(() => LoginScreen()),
           )),
       body: Obx(
         () => ListView(
@@ -94,7 +95,7 @@ class SignupScreen extends StatelessWidget {
                                   ),
                                   child: InkWell(
                                     onTap: () async {
-                                      controller.imagepicker();
+                                      controller.imagepickerfun();
                                     },
                                     child: const CircleAvatar(
                                       radius: 20,

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class DetailContainer extends StatelessWidget {
   DetailContainer({super.key});
-  final DoctorController doctorController = Get.put(DoctorController());
+  DoctorController doctorController = Get.put(DoctorController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,12 @@ class DetailContainer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 10),
               child: CircleAvatar(
                 radius: 50,
-                // backgroundImage: NetworkImage(doctorController.doctor.value
-                //     .profilepic!), // Assuming imageUrl is available in your Doctor model
+                backgroundImage:
+                    NetworkImage(doctorController.doctor.value.doctorimg!),
               ),
             ),
             const SizedBox(width: 30),

@@ -29,18 +29,18 @@ class DocumentController extends GetxController {
   }
 
   getImageUrlfromFirebase(String image) async {
-    String? url;
+    String? imageUrl;
     String uniqueName = DateTime.now().millisecond.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
         firebaseRootReference.child('myCertf$uniqueName.png');
     try {
       await toUploadImgReference.putFile(File(image));
-      url = await toUploadImgReference.getDownloadURL();
+      imageUrl = await toUploadImgReference.getDownloadURL();
     } catch (e) {
       Get.snackbar("Error", e.toString(), backgroundColor: Colors.red);
     }
 
-    return url;
+    return imageUrl;
   }
 }

@@ -17,7 +17,7 @@ class UploadImage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
         onTap: () {
-          controller.imagepicker();
+          controller.imagepickerfun();
         },
         child: Obx(() => Padding(
               padding: const EdgeInsets.all(15),
@@ -44,7 +44,7 @@ class UploadImage extends StatelessWidget {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: FileImage(
-                                      File(controller.expcerftpath.value)),
+                                      File(controller.expcerft.value)),
                                   fit: BoxFit.cover),
                               borderRadius: BorderRadius.circular(20)),
                         )),

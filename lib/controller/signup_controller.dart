@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc2heal_doctor/controller/doctor_controller.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
@@ -53,7 +51,7 @@ class SignupController extends GetxController {
     'Cardiology',
     'Neurology',
     'Gynecology',
-    'Pediatrics',
+    'Pediatrics'
   ];
   selectSpecializ(specializValue) {
     specializ.value = specializValue;
@@ -66,8 +64,9 @@ class SignupController extends GetxController {
         isLoading.value = true;
         final userCredential = await authenticationRepository.doctorSignup(
             emailController.text, passwordController.text);
+
         final doctor = DoctorModel(
-          profilepic: profilepic.value,
+          doctorimg: profilepic.value,
           name: nameController.text.trim(),
           phone: phoneController.text.trim(),
           gender: genderController.text.trim(),
@@ -139,41 +138,50 @@ class SignupController extends GetxController {
 //image selector
   final ImagePicker imagePicker = ImagePicker();
   var isProfiepathSet = false.obs;
-  var isexpcerftpathSet = false.obs;
   RxString profilepicPath = ''.obs;
-  RxString expcerftpath = ''.obs;
   var imageUrl = ''.obs;
-  imagepicker() async {
+
+  imagepickerfun() async {
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       profilepicPath.value = pickedImage.path;
       isProfiepathSet.value = true;
-      imageUrl.value = await getImageUrlfromFirebase(pickedImage.path);
-      update();
+      imageUrl.value = await getImageUrlfromFirebase(pickedImage.path) ?? '';
+      if (imageUrl.value.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'Failed to retrieve image URL from Firebase',
+          colorText: const Color.fromARGB(255, 255, 67, 67),
+          snackPosition: SnackPosition.TOP,
+        );
+      } else {
+        update();
+      }
     } else {
       Get.snackbar(
-        'Somthing Error',
-        'Add photo its required',
+        'Error',
+        'Add photo is required',
         colorText: const Color.fromARGB(255, 255, 67, 67),
         snackPosition: SnackPosition.TOP,
       );
     }
   }
 
-  getImageUrlfromFirebase(String image) async {
+  getImageUrlfromFirebase(String imagePath) async {
     String? url;
-    String uniqueName = DateTime.now().millisecond.toString();
+    String uniqueName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
-        firebaseRootReference.child('myPic$uniqueName.png');
+        firebaseRootReference.child('myPictures/$uniqueName.png');
     try {
-      await toUploadImgReference.putFile(File(image));
+      File file = File(imagePath);
+      await toUploadImgReference.putFile(file);
       url = await toUploadImgReference.getDownloadURL();
+      print("Download URL: $url"); // Debug print to check URL
     } catch (e) {
-      Get.snackbar("Error", e.toString(), backgroundColor: Colors.red);
+      print("Error uploading image: $e"); // Debug print to check errors
     }
-
     return url;
   }
 }

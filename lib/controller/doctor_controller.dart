@@ -4,13 +4,14 @@ import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class DoctorController extends GetxController {
-  
   Rx<DoctorModel> doctor = DoctorModel.emptyDoctorModel().obs;
   final name = TextEditingController();
   final email = TextEditingController();
+  Image? image;
 
   SignupController signupController = Get.put(SignupController());
   DoctorRepository doctorRepository = Get.put(DoctorRepository());
@@ -22,6 +23,7 @@ class DoctorController extends GetxController {
     await getDoctorRecord();
     name.text = doctor.value.name!;
     email.text = doctor.value.email!;
+    image = doctor.value.doctorimg as Image;
     super.onReady();
   }
 

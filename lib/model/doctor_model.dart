@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorModel {
-  final String? profilepic;
+  final String? doctorimg;
   String? expcerft;
   final String? name;
   final String? phone;
@@ -13,7 +13,7 @@ class DoctorModel {
   late final String? id;
 
   DoctorModel({
-    required this.profilepic,
+    required this.doctorimg,
     this.expcerft,
     required this.name,
     required this.phone,
@@ -31,7 +31,7 @@ class DoctorModel {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
 
     return DoctorModel(
-      profilepic: data?['profilepic'] ?? '',
+      doctorimg: data?['doctorimg'] ?? '',
       expcerft: data?['expcerft'] ?? '',
       name: data?['name'] ?? '',
       phone: data?['phone'] ?? '',
@@ -46,7 +46,7 @@ class DoctorModel {
 
   factory DoctorModel.emptyDoctorModel() {
     return DoctorModel(
-        profilepic: '',
+        doctorimg: '',
         name: '',
         phone: '',
         gender: '',
@@ -58,7 +58,7 @@ class DoctorModel {
   }
   Map<String, dynamic> toJson() {
     return {
-      'profilepic': profilepic,
+      'doctorimg': doctorimg,
       'expcerft': expcerft,
       'name': name,
       'phone': phone,

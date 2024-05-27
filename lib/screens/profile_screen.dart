@@ -18,53 +18,57 @@ class ProfileScreen extends StatelessWidget {
     final DoctorController doctorController = Get.put(DoctorController());
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Settings',
-                style: CustomTextStyle.highboldTxtStyle,
-              ),
-              const SizedBox(height: 20),
-              DetailContainer(),
-              ListTile(
-                leading: const Icon(Icons.settings, color: Colors.black),
-                title: const Text('General Settings',
-                    style: TextStyle(color: Colors.black)),
-                onTap: () {
-                  // Handle tap on General Settings
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.person_outline, color: Colors.black),
-                title: const Text('Account Details',
-                    style: TextStyle(color: Colors.black)),
-                onTap: () {
-                  // Handle tap on Account Details
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.help_outline, color: Colors.black),
-                title: const Text('Help & Support',
-                    style: TextStyle(color: Colors.black)),
-                onTap: () {
-                  // Handle tap on Help & Support
-                },
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Get.offAll(
-                      LoginScreen()); // Navigate back to login screen after signing out
-                },
-                child: const Text('Logout',
-                    style: TextStyle(color: Appcolor.primaryColor)),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Settings',
+                  style: CustomTextStyle.highboldTxtStyle,
+                ),
+                const SizedBox(height: 20),
+                DetailContainer(),
+                ListTile(
+                  leading: const Icon(Icons.settings, color: Colors.black),
+                  title: const Text('General Settings',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    // Handle tap on General Settings
+                  },
+                ),
+                ListTile(
+                  leading:
+                      const Icon(Icons.person_outline, color: Colors.black),
+                  title: const Text('Account Details',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    // Handle tap on Account Details
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.help_outline, color: Colors.black),
+                  title: const Text('Help & Support',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    // Handle tap on Help & Support
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Get.offAll(
+                        LoginScreen()); // Navigate back to login screen after signing out
+                  },
+                  child: const Text('Logout',
+                      style: TextStyle(color: Appcolor.primaryColor)),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
       ),
