@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
@@ -139,7 +140,7 @@ class SignupController extends GetxController {
   final ImagePicker imagePicker = ImagePicker();
   var isProfiepathSet = false.obs;
   RxString profilepicPath = ''.obs;
-  var imageUrl = ''.obs;
+  var doctorimg = ''.obs;
 
   imagepickerfun() async {
     final pickedImage =
@@ -147,8 +148,8 @@ class SignupController extends GetxController {
     if (pickedImage != null) {
       profilepicPath.value = pickedImage.path;
       isProfiepathSet.value = true;
-      imageUrl.value = await getImageUrlfromFirebase(pickedImage.path) ?? '';
-      if (imageUrl.value.isEmpty) {
+      doctorimg.value = await getImageUrlfromFirebase(pickedImage.path) ?? '';
+      if (doctorimg.value.isEmpty) {
         Get.snackbar(
           'Error',
           'Failed to retrieve image URL from Firebase',
@@ -176,8 +177,8 @@ class SignupController extends GetxController {
         firebaseRootReference.child('myPictures/$uniqueName.png');
     try {
       File file = File(imagePath);
-      await toUploadImgReference.putFile(file);
-      url = await toUploadImgReference.getDownloadURL();
+      TaskSnapshot taskSnapshot = await toUploadImgReference.putFile(file);
+      url = await taskSnapshot.ref.getDownloadURL();
       print("Download URL: $url"); // Debug print to check URL
     } catch (e) {
       print("Error uploading image: $e"); // Debug print to check errors
