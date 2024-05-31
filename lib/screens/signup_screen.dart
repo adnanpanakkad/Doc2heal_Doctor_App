@@ -201,6 +201,17 @@ class SignupScreen extends StatelessWidget {
                         height: 5,
                       ),
                       DetailTile(
+                        validator: (value) =>
+                            controller.textFeildValidation(value),
+                        keyboardType: TextInputType.number,
+                        controllers: controller.feesController,
+                        sub: 'fees',
+                        hittext: 'Enter your fees',
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      DetailTile(
                         validator: (value) => controller.validateEmail(value),
                         keyboardType: TextInputType.emailAddress,
                         controllers: controller.emailController,

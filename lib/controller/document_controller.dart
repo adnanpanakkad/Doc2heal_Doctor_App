@@ -5,18 +5,18 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DocumentController extends GetxController {
-  
+  final TextEditingController descriptionController = TextEditingController();
   final ImagePicker imagePicker = ImagePicker();
   var isexpcerftpathSet = false.obs;
   RxString expcerftpath = ''.obs;
-  var imageUrl = ''.obs;
+  var expcerftUrl = ''.obs;
   documentPicker() async {
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       expcerftpath.value = pickedImage.path;
       isexpcerftpathSet.value = true;
-      imageUrl.value = await getImageUrlfromFirebase(pickedImage.path);
+      expcerftUrl.value = await getImageUrlfromFirebase(pickedImage.path);
       update();
     } else {
       Get.snackbar(
@@ -28,19 +28,27 @@ class DocumentController extends GetxController {
     }
   }
 
+  textFeildValidation(String value) {
+    if (value.isEmpty) {
+      return "Fill the field";
+    } else {
+      return null;
+    }
+  }
+
   getImageUrlfromFirebase(String image) async {
-    String? imageUrl;
+    String? expcerftUrl;
     String uniqueName = DateTime.now().millisecond.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
         firebaseRootReference.child('myCertf$uniqueName.png');
     try {
       await toUploadImgReference.putFile(File(image));
-      imageUrl = await toUploadImgReference.getDownloadURL();
+      expcerftUrl = await toUploadImgReference.getDownloadURL();
     } catch (e) {
       Get.snackbar("Error", e.toString(), backgroundColor: Colors.red);
     }
 
-    return imageUrl;
+    return expcerftUrl;
   }
 }

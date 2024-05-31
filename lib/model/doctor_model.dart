@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorModel {
   final String? doctorimg;
-  String? expcerft;
+  final String? expcerft;
   final String? name;
   final String? phone;
   final String? gender;
@@ -10,6 +10,7 @@ class DoctorModel {
   final String? specialization;
   final String? email;
   final String? password;
+  final String? fees;
   late final String? id;
 
   DoctorModel({
@@ -22,6 +23,7 @@ class DoctorModel {
     required this.specialization,
     required this.email,
     required this.password,
+    required this.fees,
     required this.id,
   });
 
@@ -40,6 +42,7 @@ class DoctorModel {
       specialization: data?['specialization'] ?? '',
       email: data?['email'] ?? '',
       password: data?['password'] ?? '',
+      fees: data?['fees'] ?? '',
       id: data?['id'] ?? '',
     );
   }
@@ -54,6 +57,7 @@ class DoctorModel {
         specialization: '',
         email: '',
         password: '',
+        fees: '',
         id: '');
   }
   Map<String, dynamic> toJson() {
@@ -67,6 +71,7 @@ class DoctorModel {
       'specialization': specialization,
       'email': email,
       'password': password,
+      'fees': fees,
       'uid': id,
     };
   }

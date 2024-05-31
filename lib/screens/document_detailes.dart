@@ -6,7 +6,6 @@ import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

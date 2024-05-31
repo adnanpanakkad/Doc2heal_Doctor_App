@@ -24,6 +24,7 @@ class SignupController extends GetxController {
   final TextEditingController specializController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController feesController = TextEditingController();
 
   final RxString profilepic = ''.obs;
   final RxString expcerft = ''.obs;
@@ -75,6 +76,7 @@ class SignupController extends GetxController {
           specialization: specializController.text.trim(),
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
+          fees: feesController.text.trim(),
           id: userCredential,
         );
 
