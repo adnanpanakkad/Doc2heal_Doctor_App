@@ -1,12 +1,12 @@
 import 'package:doc2heal_doctor/controller/doctor_controller.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
+import 'package:doc2heal_doctor/widgets/common/custom_popup.dart';
 import 'package:doc2heal_doctor/widgets/profile/detail_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:doc2heal_doctor/utils/app_color.dart'; // Assuming this is where your primary color is defined
+import 'package:doc2heal_doctor/utils/app_color.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -15,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
     final DoctorController doctorController = Get.put(DoctorController());
 
     return Scaffold(
@@ -58,14 +59,22 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Get.offAll(
-                        LoginScreen()); // Navigate back to login screen after signing out
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomPopup(
+                          onTap: () async {
+                            await FirebaseAuth.instance.signOut();
+                            Get.offAll(LoginScreen());
+                          },
+                        );
+                      },
+                    );
                   },
-                  child: const Text('Logout',
-                      style: TextStyle(color: Appcolor.primaryColor)),
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                  child: const Text('Logout',
+                      style: TextStyle(color: Appcolor.primaryColor)),
                 ),
               ],
             ),

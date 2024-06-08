@@ -1,5 +1,4 @@
-import 'package:doc2heal_doctor/model/doctor_model.dart';
-import 'package:doc2heal_doctor/screens/chat_screen.dart';
+import 'package:doc2heal_doctor/screens/messages.dart';
 import 'package:doc2heal_doctor/screens/profile_screen.dart';
 import 'package:doc2heal_doctor/screens/schedule_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,8 @@ class __BottombarScreensState extends State<BottombarScreens> {
   int _currentPageIndex = 0;
   final List<Widget> _pages = [
     const ScheduleScreen(),
-    const ChatScreen(),
-    ProfileScreen(),
+    const MessageScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -37,7 +36,7 @@ class __BottombarScreensState extends State<BottombarScreens> {
           ),
           NavigationDestination(
             icon: Icon(Icons.chat),
-            label: 'Chat',
+            label: 'Messages',
           ),
           NavigationDestination(
             icon: Icon(Icons.person),

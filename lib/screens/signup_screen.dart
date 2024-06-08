@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:doc2heal_doctor/controller/signup_controller.dart';
-import 'package:doc2heal_doctor/model/doctor_model.dart';
-import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
-import 'package:doc2heal_doctor/screens/welcome_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
 import 'package:doc2heal_doctor/widgets/person_table/detail_tile.dart';

@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +36,6 @@ class SignupController extends GetxController {
 
   final RxBool isLoading = false.obs;
 //Authentication
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   //gender handling
   RxString selectRepeat = 'None'.obs;
   final List<String> selectRepeatList = ['None', 'Male', 'Female'];
