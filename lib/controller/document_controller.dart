@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,7 @@ class DocumentController extends GetxController {
     try {
       await toUploadImgReference.putFile(File(image));
       expcerftUrl = await toUploadImgReference.getDownloadURL();
+      log(expcerftUrl);
     } catch (e) {
       Get.snackbar("Error", e.toString(), backgroundColor: Colors.red);
     }

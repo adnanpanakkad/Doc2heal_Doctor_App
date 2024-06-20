@@ -13,7 +13,7 @@ class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
   final DateTime _selectedDate = DateTime.now();
-  final SignupController controller =
+  final SignupController signupController =
       Get.put<SignupController>(SignupController());
 
   @override
@@ -33,7 +33,7 @@ class SignupScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Form(
-                key: controller.signupformKey,
+                key: signupController.signupformKey,
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -71,13 +71,13 @@ class SignupScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 55,
-                                  backgroundImage: controller
+                                  backgroundImage: signupController
                                               .isProfiepathSet.value ==
                                           false
                                       ? const AssetImage('assets/Ellipse 1.png')
-                                      : FileImage(File(
-                                              controller.profilepicPath.value))
-                                          as ImageProvider,
+                                      : FileImage(File(signupController
+                                          .profilepicPath
+                                          .value)) as ImageProvider,
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
@@ -93,7 +93,7 @@ class SignupScreen extends StatelessWidget {
                                   ),
                                   child: InkWell(
                                     onTap: () async {
-                                      controller.imagepickerfun();
+                                      signupController.imagepickerfun();
                                     },
                                     child: const CircleAvatar(
                                       radius: 20,
@@ -114,17 +114,17 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
+                            signupController.textFeildValidation(value),
                         keyboardType: TextInputType.emailAddress,
-                        controllers: controller.nameController,
+                        controllers: signupController.nameController,
                         sub: 'full name',
                         hittext: 'Enter your full name',
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
+                            signupController.textFeildValidation(value),
                         keyboardType: TextInputType.number,
-                        controllers: controller.phoneController,
+                        controllers: signupController.phoneController,
                         sub: 'Phone number',
                         hittext: 'Enter your phone number',
                       ),
@@ -133,15 +133,15 @@ class SignupScreen extends StatelessWidget {
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
-                        controllers: controller.genderController,
+                            signupController.textFeildValidation(value),
+                        controllers: signupController.genderController,
                         sub: 'Gender',
-                        hittext: controller.selectRepeat.value,
+                        hittext: signupController.selectRepeat.value,
                         suffixicon: DropdownButton(
                           icon: const Icon(Icons.arrow_drop_down),
                           iconDisabledColor:
                               const Color.fromARGB(252, 103, 103, 103),
-                          items: controller.selectRepeatList
+                          items: signupController.selectRepeatList
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value.toString(),
@@ -149,7 +149,7 @@ class SignupScreen extends StatelessWidget {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            controller.selectGender(newValue!);
+                            signupController.selectGender(newValue!);
                           },
                         ),
                       ),
@@ -158,14 +158,14 @@ class SignupScreen extends StatelessWidget {
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
-                        controllers: controller.birthController,
+                            signupController.textFeildValidation(value),
+                        controllers: signupController.birthController,
                         sub: 'Birthday',
                         hittext:
                             DateFormat.yMd().format(_selectedDate).toString(),
                         suffixicon: IconButton(
                             onPressed: () {
-                              controller.getTimeFromUser(context);
+                              signupController.getTimeFromUser(context);
                             },
                             icon: const Icon(Icons.calendar_month)),
                       ),
@@ -174,15 +174,15 @@ class SignupScreen extends StatelessWidget {
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
-                        controllers: controller.specializController,
+                            signupController.textFeildValidation(value),
+                        controllers: signupController.specializController,
                         sub: 'specialization',
-                        hittext: controller.specializ.value,
+                        hittext: signupController.specializ.value,
                         suffixicon: DropdownButton<String>(
                           icon: const Icon(Icons.arrow_drop_down),
                           iconDisabledColor:
                               const Color.fromARGB(252, 103, 103, 103),
-                          items: controller.specializlist
+                          items: signupController.specializlist
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -190,7 +190,7 @@ class SignupScreen extends StatelessWidget {
                             );
                           }).toList(),
                           onChanged: (String? specializValue) {
-                            controller.selectSpecializ(specializValue);
+                            signupController.selectSpecializ(specializValue);
                           },
                         ),
                       ),
@@ -199,9 +199,9 @@ class SignupScreen extends StatelessWidget {
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.textFeildValidation(value),
+                            signupController.textFeildValidation(value),
                         keyboardType: TextInputType.number,
-                        controllers: controller.feesController,
+                        controllers: signupController.feesController,
                         sub: 'fees',
                         hittext: 'Enter your fees',
                       ),
@@ -209,9 +209,10 @@ class SignupScreen extends StatelessWidget {
                         height: 5,
                       ),
                       DetailTile(
-                        validator: (value) => controller.validateEmail(value),
+                        validator: (value) =>
+                            signupController.validateEmail(value),
                         keyboardType: TextInputType.emailAddress,
-                        controllers: controller.emailController,
+                        controllers: signupController.emailController,
                         sub: 'Email',
                         hittext: 'Enter your email address',
                       ),
@@ -220,9 +221,9 @@ class SignupScreen extends StatelessWidget {
                       ),
                       DetailTile(
                         validator: (value) =>
-                            controller.validatePassword(value),
+                            signupController.validatePassword(value),
                         keyboardType: TextInputType.emailAddress,
-                        controllers: controller.passwordController,
+                        controllers: signupController.passwordController,
                         sub: 'Password',
                         hittext: 'Enter your Password',
                       ),
@@ -240,7 +241,7 @@ class SignupScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
-          controller.signup();
+          signupController.signup();
         },
         label: const SizedBox(
           child: Row(

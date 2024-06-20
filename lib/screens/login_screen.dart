@@ -11,85 +11,83 @@ class LoginScreen extends StatelessWidget {
   LoginController controller = Get.put(LoginController());
 
   LoginScreen({super.key});
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          children: [
-            SizedBox(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: controller.loginformKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 250,
-                        height: 300,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'assets/trendy-design-of-account-phishing-flat-illustration-vector.jpg',
-                            ),
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: [
+          SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: Form(
+                key: controller.loginformKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 250,
+                      height: 300,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/trendy-design-of-account-phishing-flat-illustration-vector.jpg',
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                        child: Text(
-                          "Login to your\nAccount",
-                          style: CustomTextStyle.ultraBoldTextstyle,
-                        ),
-                      ),
-                      CustomTextfield(
-                        validation: (value) => controller.validateEmail(value),
-                        hintText: "Enter Your Email",
-                        controller: controller.emailController,
-                      ),
-                      CustomTextfield(
-                        validation: (value) =>
-                            controller.validatePassword(value),
-                        hintText: "Enter Your Password",
-                        controller: controller.passwordController,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 200,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CustomButton(
-                      text: "Sign In",
-                      onTap: () {
-                        controller.loginDoctor();
-                      },
                     ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(() => SignupScreen());
-                      },
-                      child: richText(
-                        context: context,
-                        firstTxt: "Don't have an account? ",
-                        secondTxt: "create account",
+                    const Padding(
+                      padding: EdgeInsets.only(right: 100, bottom: 15),
+                      child: Text(
+                        "Login to your\nAccount",
+                        style: CustomTextStyle.ultraBoldTextstyle,
                       ),
-                    )
+                    ),
+                    CustomTextfield(
+                      validation: (value) => controller.validateEmail(value),
+                      hintText: "Enter Your Email",
+                      controller: controller.emailController,
+                    ),
+                    CustomTextfield(
+                      validation: (value) => controller.validatePassword(value),
+                      hintText: "Enter Your Password",
+                      controller: controller.passwordController,
+                    ),
                   ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomButton(
+                    text: "Sign In",
+                    onTap: () {
+                      controller.loginDoctor();
+                    },
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => SignupScreen());
+                    },
+                    child: richText(
+                      context: context,
+                      firstTxt: "Don't have an account? ",
+                      secondTxt: "create account",
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

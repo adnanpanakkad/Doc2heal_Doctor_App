@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/screens/document_detailes.dart';
@@ -15,6 +16,7 @@ class SignupController extends GetxController {
   AuthenticationRepository authenticationRepository =
       Get.put(AuthenticationRepository());
   GlobalKey<FormState> signupformKey = GlobalKey<FormState>();
+  
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
@@ -50,7 +52,9 @@ class SignupController extends GetxController {
     'Cardiology',
     'Neurology',
     'Gynecology',
-    'Pediatrics'
+    'Pediatrics',
+    'Dental',
+    'Ophthalmology',
   ];
   selectSpecializ(specializValue) {
     specializ.value = specializValue;
@@ -169,7 +173,7 @@ class SignupController extends GetxController {
   }
 
   getImageUrlfromFirebase(String imagePath) async {
-    String? url;
+    String? imgurl;
     String uniqueName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
@@ -177,11 +181,25 @@ class SignupController extends GetxController {
     try {
       File file = File(imagePath);
       TaskSnapshot taskSnapshot = await toUploadImgReference.putFile(file);
-      url = await taskSnapshot.ref.getDownloadURL();
-      print("Download URL: $url"); // Debug print to check URL
+      imgurl = await taskSnapshot.ref.getDownloadURL();
+      log(imgurl);
+      print("Download URL: $imgurl"); // Debug print to check URL
     } catch (e) {
       print("Error uploading image: $e"); // Debug print to check errors
     }
-    return url;
+    return imgurl;
+  }
+
+  reset() {
+    nameController.clear();
+    phoneController.clear();
+    genderController.clear();
+    birthController.clear();
+    specializController.clear();
+    emailController.clear();
+    passwordController.clear();
+    feesController.clear();
+    profilepicPath.value = '';
+    isProfiepathSet.value = false;
   }
 }
