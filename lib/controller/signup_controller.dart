@@ -69,7 +69,7 @@ class SignupController extends GetxController {
             emailController.text, passwordController.text);
 
         final doctor = DoctorModel(
-          doctorimg: profilepic.value,
+          doctorimg: profileimgurl.value,
           name: nameController.text.trim(),
           phone: phoneController.text.trim(),
           gender: genderController.text.trim(),
@@ -151,8 +151,9 @@ class SignupController extends GetxController {
     if (pickedImage != null) {
       profilepicPath.value = pickedImage.path;
       isProfiepathSet.value = true;
-      doctorimg.value = await getImageUrlfromFirebase(pickedImage.path) ?? '';
-      if (doctorimg.value.isEmpty) {
+      profileimgurl.value =
+          await getImageUrlfromFirebase(pickedImage.path) ?? '';
+      if (profileimgurl.value.isEmpty) {
         Get.snackbar(
           'Error',
           'Failed to retrieve image URL from Firebase',
@@ -172,8 +173,9 @@ class SignupController extends GetxController {
     }
   }
 
+  var profileimgurl = ''.obs;
   getImageUrlfromFirebase(String imagePath) async {
-    String? imgurl;
+    String? profileimgurl;
     String uniqueName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference firebaseRootReference = FirebaseStorage.instance.ref();
     Reference toUploadImgReference =
@@ -181,14 +183,14 @@ class SignupController extends GetxController {
     try {
       File file = File(imagePath);
       TaskSnapshot taskSnapshot = await toUploadImgReference.putFile(file);
-      imgurl = await taskSnapshot.ref.getDownloadURL();
+      profileimgurl = await taskSnapshot.ref.getDownloadURL();
       // await _db.collection("user").doc(userId).update({'coverimag': imageUrl});
-      log(imgurl);
-      print("Download URL: $imgurl"); // Debug print to check URL
+      log(profileimgurl);
+      print("Download URL: $profileimgurl"); // Debug print to check URL
     } catch (e) {
       print("Error uploading image: $e"); // Debug print to check errors
     }
-    return Image.network(imgurl!);
+    return profileimgurl;
   }
 
   reset() {

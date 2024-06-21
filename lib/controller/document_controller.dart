@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DocumentController extends GetxController {
+  GlobalKey<FormState> timeKey = GlobalKey<FormState>();
+
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController starttimeController = TextEditingController();
   final TextEditingController endtimeController = TextEditingController();
@@ -69,6 +72,10 @@ class DocumentController extends GetxController {
     }
   }
 
+  //  Future<DoctorModel?> saveDocuments() async {
+  //   final document = DoctorModel(doctorimg: widget.doctorimg, name: name, phone: phone, gender: gender, birthday: birthday, specialization: specialization, email: email, password: password, fees: fees, id: id)
+  // }
+
   getImageUrlfromFirebase(String image) async {
     String? expcerftUrl;
     String uniqueName = DateTime.now().millisecond.toString();
@@ -84,65 +91,10 @@ class DocumentController extends GetxController {
     }
     return expcerftUrl;
   }
+
+  validateTimefieldes() async {
+    if (timeKey.currentState!.validate()) {
+      
+    }
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

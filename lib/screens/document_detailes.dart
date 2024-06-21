@@ -81,28 +81,31 @@ class DocumentDetails extends StatelessWidget {
                   style: CustomTextStyle.buttonTextStyle,
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TimeSlotPiker(
-                        hintText: 'start time',
-                        controller: controller.starttimeController,
-                        validation: (value) =>
-                            controller.textFieldValidation(value),
-                        onTap: () => controller.pickStartTime(context),
+                Form(
+                  key: controller.timeKey,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TimeSlotPiker(
+                          hintText: 'start time',
+                          controller: controller.starttimeController,
+                          validation: (value) =>
+                              controller.textFieldValidation(value),
+                          onTap: () => controller.pickStartTime(context),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10), // Space between the two fields
-                    Expanded(
-                      child: TimeSlotPiker(
-                        hintText: 'End time',
-                        controller: controller.endtimeController,
-                        validation: (value) =>
-                            controller.textFieldValidation(value),
-                        onTap: () => controller.pickEndTime(context),
+                      SizedBox(width: 10), // Space between the two fields
+                      Expanded(
+                        child: TimeSlotPiker(
+                          hintText: 'End time',
+                          controller: controller.endtimeController,
+                          validation: (value) =>
+                              controller.textFieldValidation(value),
+                          onTap: () => controller.pickEndTime(context),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -113,8 +116,23 @@ class DocumentDetails extends StatelessWidget {
         backgroundColor: Appcolor.primaryColor,
         onPressed: () async {
           if (controller.expcerftpath.value.isNotEmpty) {
-            
-            await doctorRepository.saveDoctorData(doctor, doctor.id!);
+            controller.validateTimefieldes();
+            final documents = DoctorModel(
+              doctorimg: doctor.doctorimg,
+              name: doctor.name,
+              phone: doctor.phone,
+              gender: doctor.gender,
+              birthday: doctor.birthday,
+              specialization: doctor.specialization,
+              email: doctor.email,
+              password: doctor.password,
+              fees: doctor.fees,
+              id: doctor.id,
+              starttime: controller.starttime.value,
+              endtime: controller.endtime.value,
+              expcerft: controller.expcerftUrl.toString(),
+            );
+            await doctorRepository.saveDoctorData(documents, doctor.id!);
             Get.offAll(() => const BottombarScreens());
           } else {
             Get.snackbar(

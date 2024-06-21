@@ -6,7 +6,7 @@ import 'package:doc2heal_doctor/widgets/profile/detail_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:doc2heal_doctor/utils/app_color.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -34,14 +34,14 @@ class ProfileScreen extends StatelessWidget {
                 DetailContainer(),
                 const SizedBox(height: 30),
 
-                Text('General', style: CustomTextStyle.buttonTextStyle),
+                const Text('General', style: CustomTextStyle.buttonTextStyle),
                 ListTile(
                   leading: const Icon(Icons.assignment_outlined,
                       color: Colors.black),
                   title: const Text('Terms & conditions',
                       style: TextStyle(color: Colors.black)),
                   onTap: () {
-                    // Handle tap on General Settings
+                    // Handle tap Account Detailes
                   },
                 ),
                 ListTile(
@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                Text('Account', style: CustomTextStyle.buttonTextStyle),
+                const Text('Account', style: CustomTextStyle.buttonTextStyle),
                 ListTile(
                   leading:
                       const Icon(Icons.person_outline, color: Colors.black),
@@ -91,25 +91,6 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
-                // ElevatedButton(
-                //   onPressed: () async {
-                //     showDialog(
-                //       context: context,
-                //       builder: (BuildContext context) {
-                //         return CustomPopup(
-                //           onTap: () async {
-                //             await FirebaseAuth.instance.signOut();
-                //             Get.offAll(LoginScreen());
-                //           },
-                //         );
-                //       },
-                //     );
-                //   },
-                //   style:
-                //       ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                //   child: const Text('Logout',
-                //       style: TextStyle(color: Appcolor.primaryColor)),
-                // ),
               ],
             ),
           ),
