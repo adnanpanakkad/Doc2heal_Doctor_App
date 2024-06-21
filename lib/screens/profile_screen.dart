@@ -32,18 +32,22 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 DetailContainer(),
+                const SizedBox(height: 30),
+
+                Text('General', style: CustomTextStyle.buttonTextStyle),
                 ListTile(
-                  leading: const Icon(Icons.settings, color: Colors.black),
-                  title: const Text('General Settings',
+                  leading: const Icon(Icons.assignment_outlined,
+                      color: Colors.black),
+                  title: const Text('Terms & conditions',
                       style: TextStyle(color: Colors.black)),
                   onTap: () {
                     // Handle tap on General Settings
                   },
                 ),
                 ListTile(
-                  leading:
-                      const Icon(Icons.person_outline, color: Colors.black),
-                  title: const Text('Account Details',
+                  leading: const Icon(Icons.admin_panel_settings_outlined,
+                      color: Colors.black),
+                  title: const Text('Privecy & Policy',
                       style: TextStyle(color: Colors.black)),
                   onTap: () {
                     // Handle tap on Account Details
@@ -57,8 +61,23 @@ class ProfileScreen extends StatelessWidget {
                     // Handle tap on Help & Support
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () async {
+                const SizedBox(height: 30),
+
+                Text('Account', style: CustomTextStyle.buttonTextStyle),
+                ListTile(
+                  leading:
+                      const Icon(Icons.person_outline, color: Colors.black),
+                  title: const Text('profile',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    // Handle tap on Help & Support
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout, color: Colors.red),
+                  title: const Text('Logout',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () async {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -71,11 +90,26 @@ class ProfileScreen extends StatelessWidget {
                       },
                     );
                   },
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                  child: const Text('Logout',
-                      style: TextStyle(color: Appcolor.primaryColor)),
                 ),
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return CustomPopup(
+                //           onTap: () async {
+                //             await FirebaseAuth.instance.signOut();
+                //             Get.offAll(LoginScreen());
+                //           },
+                //         );
+                //       },
+                //     );
+                //   },
+                //   style:
+                //       ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                //   child: const Text('Logout',
+                //       style: TextStyle(color: Appcolor.primaryColor)),
+                // ),
               ],
             ),
           ),

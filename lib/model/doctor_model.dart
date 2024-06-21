@@ -11,6 +11,8 @@ class DoctorModel {
   final String? email;
   final String? password;
   final String? fees;
+  final String? starttime;
+  final String? endtime;
   late final String? id;
 
   DoctorModel({
@@ -24,6 +26,8 @@ class DoctorModel {
     required this.email,
     required this.password,
     required this.fees,
+    this.starttime,
+    this.endtime,
     required this.id,
   });
 
@@ -43,6 +47,8 @@ class DoctorModel {
       email: data?['email'] ?? '',
       password: data?['password'] ?? '',
       fees: data?['fees'] ?? '',
+      starttime: data?['starttime'] ?? '',
+      endtime: data?['endtime'] ?? '',
       id: data?['id'] ?? '',
     );
   }
@@ -58,6 +64,8 @@ class DoctorModel {
         email: '',
         password: '',
         fees: '',
+        starttime: '',
+        endtime: '',
         id: '');
   }
   Map<String, dynamic> toJson() {
@@ -72,6 +80,8 @@ class DoctorModel {
       'email': email,
       'password': password,
       'fees': fees,
+      'starttime': starttime,
+      'endtime': endtime,
       'uid': id,
     };
   }

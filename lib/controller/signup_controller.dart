@@ -16,7 +16,7 @@ class SignupController extends GetxController {
   AuthenticationRepository authenticationRepository =
       Get.put(AuthenticationRepository());
   GlobalKey<FormState> signupformKey = GlobalKey<FormState>();
-  
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
@@ -182,12 +182,13 @@ class SignupController extends GetxController {
       File file = File(imagePath);
       TaskSnapshot taskSnapshot = await toUploadImgReference.putFile(file);
       imgurl = await taskSnapshot.ref.getDownloadURL();
+      // await _db.collection("user").doc(userId).update({'coverimag': imageUrl});
       log(imgurl);
       print("Download URL: $imgurl"); // Debug print to check URL
     } catch (e) {
       print("Error uploading image: $e"); // Debug print to check errors
     }
-    return imgurl;
+    return Image.network(imgurl!);
   }
 
   reset() {

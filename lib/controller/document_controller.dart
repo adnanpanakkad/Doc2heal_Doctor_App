@@ -7,10 +7,17 @@ import 'package:image_picker/image_picker.dart';
 
 class DocumentController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController starttimeController = TextEditingController();
+  final TextEditingController endtimeController = TextEditingController();
+
   final ImagePicker imagePicker = ImagePicker();
+
+  RxString starttime = ''.obs;
+  RxString endtime = ''.obs;
   var isexpcerftpathSet = false.obs;
   RxString expcerftpath = ''.obs;
   var expcerftUrl = ''.obs;
+
   documentPicker() async {
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
@@ -21,7 +28,7 @@ class DocumentController extends GetxController {
       update();
     } else {
       Get.snackbar(
-        'Somthing Error',
+        'Something Error',
         'Add photo its required',
         colorText: const Color.fromARGB(255, 255, 67, 67),
         snackPosition: SnackPosition.TOP,
@@ -29,11 +36,36 @@ class DocumentController extends GetxController {
     }
   }
 
-  textFeildValidation(String value) {
+  textFieldValidation(String value) {
     if (value.isEmpty) {
       return "Fill the field";
     } else {
       return null;
+    }
+  }
+
+  var selectedStartTime = TimeOfDay.now().obs;
+  var selectedEndTime = TimeOfDay.now().obs;
+
+  void pickStartTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedStartTime.value,
+    );
+    if (picked != null && picked != selectedStartTime.value) {
+      selectedStartTime.value = picked;
+      starttimeController.text = picked.format(context);
+    }
+  }
+
+  void pickEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedEndTime.value,
+    );
+    if (picked != null && picked != selectedEndTime.value) {
+      selectedEndTime.value = picked;
+      endtimeController.text = picked.format(context);
     }
   }
 
@@ -50,7 +82,67 @@ class DocumentController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", e.toString(), backgroundColor: Colors.red);
     }
-
     return expcerftUrl;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

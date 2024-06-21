@@ -18,9 +18,9 @@ class MessageScreen extends StatelessWidget {
     ];
     List<String> category = ['cadiology', 'pediatric', 'dental', 'neaurology'];
 
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,7 @@ class MessageScreen extends StatelessWidget {
                       leading: CircleAvatar(
                         backgroundImage: AssetImage('assets/image.png'),
                       ),
-                      title: Text(userName),
+                      title: Text('Dr.${userName}'),
                       subtitle: Text(category[index]),
                       onTap: () {
                         Navigator.push(
