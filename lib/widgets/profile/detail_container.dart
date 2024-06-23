@@ -1,44 +1,59 @@
-import 'package:doc2heal_doctor/controller/doctor_controller.dart';
+import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class DetailContainer extends StatelessWidget {
-  DetailContainer({super.key});
-  DoctorController doctorController = Get.put(DoctorController());
+  const DetailContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-    return Obx(
-      () => Container(
-        decoration: BoxDecoration(
-          color: Appcolor
-              .primaryColor, // Use your primary color from app_color.dart
-          borderRadius: BorderRadius.circular(20),
-        ),
-        height: screenHeight * 0.17,
-        width: screenWidth * 1,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage:
-                    NetworkImage(doctorController.doctor.value.doctorimg!),
+    User? doctor = FirebaseAuth.instance.currentUser;
+
+    if (doctor == null) {
+      // Handle case when user is not authenticated
+      return const Center(child: Text('User not authenticated'));
+    }
+
+    return StreamBuilder<Map<String, dynamic>?>(
+      stream: DoctorRepository().getDoctorDetails(doctor.uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return const Center(child: Text('No Data Available'));
+        }
+
+        var doctorData = snapshot.data!;
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Appcolor.primaryColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          height: MediaQuery.of(context).size.height * 0.17,
+          width: MediaQuery.of(context).size.width * 1,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: doctorData['doctorimg'] != null
+                      ? NetworkImage(doctorData['doctorimg'])
+                      : null,
+                ),
               ),
-            ),
-            const SizedBox(width: 30),
-            Expanded(
-              child: Column(
+              const SizedBox(width: 30),
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctorController.doctor.value.name!,
+                    doctorData['name'] ?? 'No Name',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -47,16 +62,15 @@ class DetailContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    doctorController.doctor.value.email!,
+                    doctorData['email'] ?? 'No Email',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 13,
                       color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 5),
-                  // Assuming you have a phone field in your Doctor model
                   Text(
-                    doctorController.doctor.value.phone!,
+                    doctorData['phone'] ?? 'No Phone',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -64,10 +78,10 @@ class DetailContainer extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:doc2heal_doctor/screens/messages.dart';
-import 'package:doc2heal_doctor/screens/profile_screen.dart';
+import 'package:doc2heal_doctor/screens/settings_screen.dart';
 import 'package:doc2heal_doctor/screens/schedule_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,10 @@ class __BottombarScreensState extends State<BottombarScreens> {
   final List<Widget> _pages = [
     const ScheduleScreen(),
     const MessageScreen(),
-    const ProfileScreen(),
+    const SettingsScreen(
+      uid: '',
+      userData: {},
+    ),
   ];
 
   @override
@@ -39,8 +42,8 @@ class __BottombarScreensState extends State<BottombarScreens> {
             label: 'Messages',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
