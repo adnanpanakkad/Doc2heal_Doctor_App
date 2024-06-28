@@ -1,9 +1,10 @@
+import 'package:doc2heal_doctor/screens/appoinment_detail_screen.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:flutter/material.dart';
 
-class ScheduleScreen extends StatelessWidget {
-  const ScheduleScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +52,11 @@ class ScheduleScreen extends StatelessWidget {
                     title: Text(userName),
                     subtitle: const Text('20 years | 10.10AM'),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => ChatScreen()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AppoinmentDetailScreen()),
+                      );
                     },
                   );
                 },

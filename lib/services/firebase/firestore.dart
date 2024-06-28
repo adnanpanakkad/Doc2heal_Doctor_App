@@ -35,4 +35,8 @@ class DoctorRepository extends GetxController {
       return snapshot.data() as Map<String, dynamic>?;
     });
   }
+  
+
+
+  
 }

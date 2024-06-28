@@ -1,4 +1,4 @@
-import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:doc2heal_doctor/widgets/chat/appbar.dart';
 import 'package:flutter/material.dart';
 
 class HelpandSupport extends StatelessWidget {

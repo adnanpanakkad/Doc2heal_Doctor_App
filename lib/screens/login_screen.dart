@@ -47,12 +47,12 @@ class LoginScreen extends StatelessWidget {
                     CustomTextfield(
                       validation: (value) => controller.validateEmail(value),
                       hintText: "Enter Your Email",
-                      controller: controller.emailController,
+                      controller: controller.emailController, focusNode:FocusNode(),
                     ),
                     CustomTextfield(
                       validation: (value) => controller.validatePassword(value),
                       hintText: "Enter Your Password",
-                      controller: controller.passwordController,
+                      controller: controller.passwordController, focusNode: FocusNode(),
                     ),
                   ],
                 ),

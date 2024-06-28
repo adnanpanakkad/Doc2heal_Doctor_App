@@ -1,6 +1,6 @@
 import 'package:doc2heal_doctor/screens/messages.dart';
 import 'package:doc2heal_doctor/screens/settings_screen.dart';
-import 'package:doc2heal_doctor/screens/schedule_screen.dart';
+import 'package:doc2heal_doctor/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottombarScreens extends StatefulWidget {
@@ -13,7 +13,7 @@ class BottombarScreens extends StatefulWidget {
 class __BottombarScreensState extends State<BottombarScreens> {
   int _currentPageIndex = 0;
   final List<Widget> _pages = [
-    const ScheduleScreen(),
+    const HomeScreen(),
     const MessageScreen(),
     const SettingsScreen(
       uid: '',
@@ -35,7 +35,7 @@ class __BottombarScreensState extends State<BottombarScreens> {
         destinations: const <NavigationDestination>[
           NavigationDestination(
             icon: Icon(Icons.calendar_today),
-            label: 'Schedule',
+            label: 'Appoinments',
           ),
           NavigationDestination(
             icon: Icon(Icons.chat),

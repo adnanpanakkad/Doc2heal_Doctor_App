@@ -45,7 +45,7 @@ class MessageScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ChatScreen()),
+                          MaterialPageRoute(builder: (context) => ChatScreen(reciverEmail: '', reciverID: '',)),
                         );
                       },
                     );

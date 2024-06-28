@@ -5,7 +5,7 @@ import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
-import 'package:doc2heal_doctor/widgets/appbar/appbar.dart';
+import 'package:doc2heal_doctor/widgets/chat/appbar.dart';
 import 'package:doc2heal_doctor/widgets/common/time_piker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -128,8 +128,8 @@ class DocumentDetails extends StatelessWidget {
               password: doctor.password,
               fees: doctor.fees,
               id: doctor.id,
-              starttime: controller.starttime.value,
-              endtime: controller.endtime.value,
+              starttime: controller.starttimeController.text,
+              endtime: controller.endtimeController.text,
               expcerft: controller.expcerftUrl.toString(),
             );
             await doctorRepository.saveDoctorData(documents, doctor.id!);
