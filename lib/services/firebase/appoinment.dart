@@ -76,4 +76,11 @@ class AppoinmentServices {
         .get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<List<AppointmentModel>> getAppointmentsByDoctorId(
+      String doctorId) async {
+    final querySnapshot =
+        await appointment.where('docid', isEqualTo: doctorId).get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
 }

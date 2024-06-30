@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppointmentModel {
   String? id;
@@ -24,6 +25,16 @@ class AppointmentModel {
       id: id,
       uid: json['uid'],
       docid: json['docid'],
+    );
+  }
+  factory AppointmentModel.fromSnapshot(DocumentSnapshot<Object?> snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return AppointmentModel(
+      date: data['date'],
+      time: data['time'],
+      reason: data['reason'],
+      uid: data['uid'],
+      docid: data['docid'],
     );
   }
 

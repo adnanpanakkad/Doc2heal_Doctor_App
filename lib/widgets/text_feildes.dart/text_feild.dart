@@ -11,7 +11,8 @@ class CustomTextfield extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.readOnly,
-    this.onChanged, required FocusNode focusNode,
+    this.onChanged,
+    FocusNode? focusNode,
   });
   final TextEditingController? controller;
   final Widget? suffixIcon;

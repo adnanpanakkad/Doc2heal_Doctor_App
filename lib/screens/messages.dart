@@ -1,51 +1,94 @@
-import 'package:doc2heal_doctor/screens/chat_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doc2heal_doctor/services/firebase/firestore.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/common/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_screen.dart';
+
 class MessageScreen extends StatelessWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+  const MessageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Define a list of usernames with custom values for specific indices
-    List<String> usernames = [
-      'adhil',
-      'amal',
-      'rahul',
-      'gokul',
-
-      // Add more usernames as needed
-    ];
-    List<String> category = ['cadiology', 'pediatric', 'dental', 'neaurology'];
-
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      backgroundColor: Appcolor.lightbackground,
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppbar(text: 'Messages'),
+              const CustomAppbar(
+                text: 'Messages',
+              ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: usernames
-                      .length, // Adjust this to match the length of your usernames list
-                  itemBuilder: (context, index) {
-                    // Check if there's a custom username for this index; otherwise, use the default pattern
-                    String userName = index < usernames.length
-                        ? usernames[index]
-                        : 'User ${index + 1}';
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: DoctorRepository().getAlluser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(child: Text('Something went wrong'));
+                    }
 
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/image.png'),
-                      ),
-                      title: Text('Dr.${userName}'),
-                      subtitle: Text(category[index]),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChatScreen(reciverEmail: '', reciverID: '',)),
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text('No doctors available'));
+                    }
+
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic> userData =
+                            snapshot.data!.docs[index].data();
+
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                      reciverEmail: userData['email'],
+                                      reciverID: '',
+                                    )));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      NetworkImage(userData['coverimag'] ?? ''),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        userData['name'] ?? '',
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        userData[''] ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     );

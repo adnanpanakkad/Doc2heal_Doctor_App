@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
+import 'package:doc2heal_doctor/model/user_model.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -30,13 +33,27 @@ class DoctorRepository extends GetxController {
     return null;
   }
 
-   Stream<Map<String, dynamic>?> getDoctorDetails(String userId) {
+  Stream<Map<String, dynamic>?> getDoctorDetails(String userId) {
     return _db.collection('doctor').doc(userId).snapshots().map((snapshot) {
       return snapshot.data() as Map<String, dynamic>?;
     });
   }
-  
 
+  //user
 
-  
+  Future<UserModel?> getUserById(String userId) async {
+    try {
+      final docSnapshot = await _db.collection('users').doc(userId).get();
+      if (docSnapshot.exists) {
+        return UserModel.fromSnapshot(docSnapshot);
+      }
+    } catch (error) {
+      log('Error fetching user by ID: $error');
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAlluser() {
+    return _db.collection("users").snapshots();
+  }
 }

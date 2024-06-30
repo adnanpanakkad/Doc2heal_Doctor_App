@@ -1,3 +1,4 @@
+import 'package:doc2heal_doctor/model/appoinment.dart';
 import 'package:flutter/material.dart';
 
 class AppoinmentDetailScreen extends StatelessWidget {
@@ -5,8 +6,6 @@ class AppoinmentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-    );
+    return Scaffold();
   }
 }
