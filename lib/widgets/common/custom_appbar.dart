@@ -35,13 +35,13 @@ class CustomAppbar extends StatelessWidget {
         SizedBox(
           child: Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.videocam_outlined,
-                  size: 30,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: Icon(
+              //     Icons.videocam_outlined,
+              //     size: 30,
+              //   ),
+              // ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-class ScheduleCard extends StatelessWidget {
-  final String? docName;
-  final String? docimgurl;
-  final String? specialization;
+class AppoinmentCard extends StatelessWidget {
+  final String? username;
+  final String? userimgurl;
+  final String? reason;
   final String? time;
   final String? date;
-  const ScheduleCard({
+  const AppoinmentCard({
     super.key,
-    required this.docName,
-    required this.docimgurl,
-    required this.specialization,
-    required this.time,
-    required this.date,
+    this.username,
+    this.userimgurl,
+    this.reason,
+    this.time,
+    this.date,
   });
 
   @override
@@ -34,7 +34,7 @@ class ScheduleCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 30,
                   backgroundImage:
-                      NetworkImage(docimgurl!), // Use actual image URL
+                      NetworkImage(userimgurl!), // Use actual image URL
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -42,13 +42,13 @@ class ScheduleCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        docName!,
+                        username!,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(specialization!),
+                      Text(reason!),
                     ],
                   ),
                 ),
@@ -69,34 +69,27 @@ class ScheduleCard extends StatelessWidget {
                     Text(time!),
                   ],
                 ),
-                const Row(
-                  children: [
-                    Icon(Icons.circle, color: Colors.green, size: 12),
-                    SizedBox(width: 5),
-                    Text('Confirmed'),
-                  ],
-                ),
+                // const Row(
+                //   children: [
+                //     Icon(Icons.circle, color: Colors.green, size: 12),
+                //     SizedBox(width: 5),
+                //     Text('Confirmed'),
+                //   ],
+                // ),
               ],
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.grey[300],
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.grey[300],
+                    ),
+                    child: const Text('Cancel'),
                   ),
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text('Reschedule'),
                 ),
               ],
             ),

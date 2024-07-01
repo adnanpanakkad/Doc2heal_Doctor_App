@@ -1,6 +1,7 @@
 import 'package:doc2heal_doctor/screens/messages.dart';
 import 'package:doc2heal_doctor/screens/settings_screen.dart';
 import 'package:doc2heal_doctor/screens/home_screen.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:flutter/material.dart';
 
 class BottombarScreens extends StatefulWidget {
@@ -26,6 +27,8 @@ class __BottombarScreensState extends State<BottombarScreens> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
+        indicatorColor: Appcolor.primaryColor,
+        backgroundColor: Colors.white60,
         onDestinationSelected: (int index) {
           setState(() {
             _currentPageIndex = index;
