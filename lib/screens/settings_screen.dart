@@ -1,7 +1,8 @@
-import 'package:doc2heal_doctor/screens/help_support_screen.dart';
+import 'package:doc2heal_doctor/screens/profile/help_support_screen.dart';
 import 'package:doc2heal_doctor/screens/login_screen.dart';
-import 'package:doc2heal_doctor/screens/privecy_policy_screen.dart';
-import 'package:doc2heal_doctor/screens/terms_conditions_screen.dart';
+import 'package:doc2heal_doctor/screens/profile/privecy_policy_screen.dart';
+import 'package:doc2heal_doctor/screens/profile/profile_screen.dart';
+import 'package:doc2heal_doctor/screens/profile/terms_conditions_screen.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/common/custom_popup.dart';
 import 'package:doc2heal_doctor/widgets/profile/detail_container.dart';
@@ -87,7 +88,7 @@ class SettingsScreen extends StatelessWidget {
                       style: TextStyle(color: Colors.black)),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HelpandSupport()));
+                        builder: (context) => ProfileScreen()));
                   },
                 ),
                 ListTile(

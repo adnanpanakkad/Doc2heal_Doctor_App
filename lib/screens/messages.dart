@@ -107,7 +107,9 @@ class _MessageScreenState extends State<MessageScreen> {
                                                             ChatScreen(
                                                               reciverEmail:
                                                                   user.name!,
-                                                              reciverID: '',
+                                                              reciverID:
+                                                                  user.id!
+                                                                      ,
                                                             )));
                                               },
                                             );

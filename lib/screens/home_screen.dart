@@ -46,11 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Center(
-                    child: Text(
-                      'Today',
-                      style: CustomTextStyle.buttonTextStyle,
-                    ),
+                  SizedBox(
+                    height: 15,
                   ),
                   Expanded(
                     child: FutureBuilder<List<AppointmentModel>>(

@@ -22,7 +22,7 @@ class AppoinmentServices {
 
   Future<List<AppointmentModel>> getUserAppointments(String userId) async {
     final querySnapshot = await appointment
-        .where('uid', isEqualTo: userId)
+        .where('docid', isEqualTo: userId)
         .where('status', isEqualTo: false)
         .get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();

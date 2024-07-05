@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:doc2heal_doctor/model/user_model.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
 
 class DoctorRepository extends GetxController {
   AuthenticationRepository authenticationRepository =
