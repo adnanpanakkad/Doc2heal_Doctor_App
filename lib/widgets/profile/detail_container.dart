@@ -1,5 +1,6 @@
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
 import 'package:doc2heal_doctor/utils/app_color.dart';
+import 'package:doc2heal_doctor/widgets/home/shimmer_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class DetailContainer extends StatelessWidget {
       stream: DoctorRepository().getDoctorDetails(doctor.uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const ShimmerList();
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data == null) {
@@ -53,7 +54,7 @@ class DetailContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctorData['name'] ?? 'No Name',
+                    'Dr.${doctorData['name']}' ?? 'No Name',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

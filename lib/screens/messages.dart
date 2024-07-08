@@ -17,7 +17,8 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  final AppoinmentServices _appointmentServices = Get.put(AppoinmentServices());
+  final AppointmentController appointmentController =
+      Get.put(AppointmentController());
   final DoctorRepository _userService = Get.put(DoctorRepository());
 
   @override
@@ -54,8 +55,8 @@ class _MessageScreenState extends State<MessageScreen> {
                         children: [
                           Expanded(
                             child: FutureBuilder<List<AppointmentModel>>(
-                              future: _appointmentServices
-                                  .getUserAppointments(currentUser!.uid),
+                              future: appointmentController
+                                  .getUpcomingAppointments(currentUser!.uid),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -108,8 +109,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                               reciverEmail:
                                                                   user.name!,
                                                               reciverID:
-                                                                  user.id!
-                                                                      ,
+                                                                  user.id!,
                                                             )));
                                               },
                                             );

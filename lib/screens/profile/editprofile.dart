@@ -56,19 +56,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     // Navigator.of(context).pop();
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _genderController.dispose();
-    _birthdayController.dispose();
-    _specializationController.dispose();
-    _feesController.dispose();
-    _startTimeController.dispose();
-    _endTimeController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _nameController.dispose();
+  //   _emailController.dispose();
+  //   _phoneController.dispose();
+  //   _genderController.dispose();
+  //   _birthdayController.dispose();
+  //   _specializationController.dispose();
+  //   _feesController.dispose();
+  //   _startTimeController.dispose();
+  //   _endTimeController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,50 +79,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
+        child: Column(
           children: [
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: widget.docData['doctorimg'] != null
+                  ? NetworkImage(widget.docData['doctorimg'])
+                  : AssetImage('assets\Ellipse 1.png') as ImageProvider,
             ),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
-            ),
-            TextField(
-              controller: _genderController,
-              decoration: InputDecoration(labelText: 'Gender'),
-            ),
-            TextField(
-              controller: _birthdayController,
-              decoration: InputDecoration(labelText: 'Birthday'),
-            ),
-            TextField(
-              controller: _specializationController,
-              decoration: InputDecoration(labelText: 'Specialization'),
-            ),
-            TextField(
-              controller: _feesController,
-              decoration: InputDecoration(labelText: 'Fees'),
-            ),
-            TextField(
-              controller: _startTimeController,
-              decoration: InputDecoration(labelText: 'Start Time'),
-            ),
-            TextField(
-              controller: _endTimeController,
-              decoration: InputDecoration(labelText: 'End Time'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateProfile,
-              child: Text('Update'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolor.primaryColor,
+            Expanded(
+              child: ListView(
+                children: [
+                  TextField(
+                    controller: _nameController,
+                    decoration: InputDecoration(labelText: 'Name'),
+                  ),
+                  TextField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(labelText: 'Phone'),
+                  ),
+                  TextField(
+                    controller: _genderController,
+                    decoration: InputDecoration(labelText: 'Gender'),
+                  ),
+                  TextField(
+                    controller: _birthdayController,
+                    decoration: InputDecoration(labelText: 'Birthday'),
+                  ),
+                  TextField(
+                    controller: _specializationController,
+                    decoration: InputDecoration(labelText: 'Specialization'),
+                  ),
+                  TextField(
+                    controller: _feesController,
+                    decoration: InputDecoration(labelText: 'Fees'),
+                  ),
+                  TextField(
+                    controller: _startTimeController,
+                    decoration: InputDecoration(labelText: 'Start Time'),
+                  ),
+                  TextField(
+                    controller: _endTimeController,
+                    decoration: InputDecoration(labelText: 'End Time'),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 250,
+                    width: double.infinity,
+                    child: Image.network(widget.docData['expcerft']),
+                  ),
+                  ElevatedButton(
+                    onPressed: _updateProfile,
+                    child: Text('Update'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Appcolor.primaryColor,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

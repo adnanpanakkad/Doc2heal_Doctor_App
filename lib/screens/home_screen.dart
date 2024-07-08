@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AppoinmentServices _appointmentServices = Get.put(AppoinmentServices());
+  final AppointmentController controller = Get.put(AppointmentController());
   final DoctorRepository _userService = Get.put(DoctorRepository());
 
   @override
@@ -51,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                     child: FutureBuilder<List<AppointmentModel>>(
-                      future: _appointmentServices
-                          .getUserAppointments(currentdoc!.uid),
+                      future:
+                          controller.getUpcomingAppointments(currentdoc!.uid),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -91,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   } else {
                                     final user = userSnapshot.data!;
                                     return AppoinmentCard(
+                                        id: appointment.id,
                                         username: user.name,
                                         userimgurl: user.coverimag,
                                         reason: appointment.reason,

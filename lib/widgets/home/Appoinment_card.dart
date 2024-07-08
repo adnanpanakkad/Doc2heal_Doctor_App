@@ -1,19 +1,25 @@
+import 'package:doc2heal_doctor/services/firebase/appoinment.dart';
+import 'package:doc2heal_doctor/widgets/home/popup.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
 class AppoinmentCard extends StatelessWidget {
+  AppointmentController controller = Get.put(AppointmentController());
   final String? username;
   final String? userimgurl;
   final String? reason;
   final String? time;
   final String? date;
-  const AppoinmentCard({
+  final String? id;
+  AppoinmentCard({
     super.key,
     this.username,
     this.userimgurl,
     this.reason,
     this.time,
     this.date,
+    required this.id,
   });
 
   @override
@@ -42,13 +48,13 @@ class AppoinmentCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        username!,
+                        username!.toUpperCase(),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(reason!),
+                      Text('reason:${reason!}'),
                     ],
                   ),
                 ),
@@ -63,19 +69,19 @@ class AppoinmentCard extends StatelessWidget {
                     const Icon(Icons.calendar_today, size: 16),
                     const SizedBox(width: 5),
                     Text(date!),
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 40),
                     const Icon(Icons.access_time, size: 16),
                     const SizedBox(width: 5),
                     Text(time!),
                   ],
                 ),
-                // const Row(
-                //   children: [
-                //     Icon(Icons.circle, color: Colors.green, size: 12),
-                //     SizedBox(width: 5),
-                //     Text('Confirmed'),
-                //   ],
-                // ),
+                const Row(
+                  children: [
+                    Icon(Icons.circle, color: Colors.green, size: 12),
+                    SizedBox(width: 5),
+                    Text('Upcoming'),
+                  ],
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -83,7 +89,20 @@ class AppoinmentCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Popup(
+                            message: 'Are you sure',
+                            onTap: () async {
+                              controller.updateAppointmentField(id!, true);
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black,
                       backgroundColor: Colors.grey[300],

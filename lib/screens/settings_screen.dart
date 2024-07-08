@@ -5,10 +5,12 @@ import 'package:doc2heal_doctor/screens/profile/profile_screen.dart';
 import 'package:doc2heal_doctor/screens/profile/terms_conditions_screen.dart';
 import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/common/custom_popup.dart';
+import 'package:doc2heal_doctor/widgets/home/shimmer_screen.dart';
 import 'package:doc2heal_doctor/widgets/profile/detail_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SettingsScreen extends StatelessWidget {
   final String uid;
@@ -38,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return const ShimmerList();
                     }
                     if (snapshot.hasData && snapshot.data != null) {
                       return const DetailContainer();
