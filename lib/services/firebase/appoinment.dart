@@ -9,6 +9,8 @@ class AppointmentController extends GetxController {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late CollectionReference<AppointmentModel> appointment;
   var allAppointmentList = <AppointmentModel>[].obs;
+  var upcomingAppointmentList = <AppointmentModel>[].obs;
+  List<AppointmentModel> allAppoinmentList = <AppointmentModel>[].obs;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   AppointmentController() {
@@ -84,15 +86,16 @@ class AppointmentController extends GetxController {
           .where('docid', isEqualTo: userId)
           .where('status', isEqualTo: false)
           .get();
-      List<AppointmentModel> expiredAppointments = [];
+      List<AppointmentModel> upcomingAppointments = [];
+      upcomingAppointmentList.value = upcomingAppointments;
       for (var doc in querySnapshot.docs) {
         AppointmentModel appointment = doc.data();
         if (isAppointmentOngoing(appointment.date!, appointment.time!)) {
-          expiredAppointments.add(appointment);
+          upcomingAppointments.add(appointment);
         }
       }
 
-      return expiredAppointments;
+      return upcomingAppointments;
     } catch (e) {
       log('Error fetching expired appointments: $e');
       rethrow;

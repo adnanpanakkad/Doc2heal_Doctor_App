@@ -72,9 +72,6 @@ class DocumentController extends GetxController {
     }
   }
 
-  //  Future<DoctorModel?> saveDocuments() async {
-  //   final document = DoctorModel(doctorimg: widget.doctorimg, name: name, phone: phone, gender: gender, birthday: birthday, specialization: specialization, email: email, password: password, fees: fees, id: id)
-  // }
 
   getImageUrlfromFirebase(String image) async {
     String? expcerftUrl;
@@ -93,8 +90,35 @@ class DocumentController extends GetxController {
   }
 
   validateTimefieldes() async {
-    if (timeKey.currentState!.validate()) {
-      
-    }
+    if (timeKey.currentState!.validate()) {}
+  }
+
+  void showCustomSnackbar() {
+    Get.snackbar(
+      'Profile updated', 
+      'Your profile has been successfully updated.', 
+      snackPosition: SnackPosition.TOP, 
+      backgroundColor:
+          Colors.green.withOpacity(0.8), 
+      colorText: Colors.white, 
+      borderRadius: 8, 
+      margin: const EdgeInsets.all(10), 
+      icon: const Icon(
+        Icons.check_circle,
+        color: Colors.white,
+        size: 28,
+      ), 
+      shouldIconPulse: false, 
+      boxShadows: [
+        BoxShadow(
+          color: Colors.black26,
+          blurRadius: 8,
+          offset: Offset(0, 2),
+        ),
+      ], 
+      duration: const Duration(seconds: 3), 
+      isDismissible: true, 
+      snackStyle: SnackStyle.FLOATING, 
+    );
   }
 }

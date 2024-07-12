@@ -6,7 +6,6 @@ import 'package:doc2heal_doctor/services/firebase/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-
 class DoctorRepository extends GetxController {
   AuthenticationRepository authenticationRepository =
       Get.put(AuthenticationRepository());
@@ -55,5 +54,16 @@ class DoctorRepository extends GetxController {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAlluser() {
     return _db.collection("users").snapshots();
+  }
+
+  Future<DoctorModel?> updateUserProfile(
+      String userId, Map<String, dynamic> updatedData) async {
+    try {
+      await _db.collection('doctor').doc(userId).update(updatedData);
+    } catch (e) {
+      log('Error updating user profile: $e');
+      throw 'Error updating user profile';
+    }
+    return null;
   }
 }
