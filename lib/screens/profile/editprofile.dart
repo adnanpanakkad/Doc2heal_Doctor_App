@@ -57,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Map<String, dynamic> updatedData = {
       'doctorimg': controller.profilepicPath.value.isNotEmpty
           ? controller.profileimgurl.toString()
-          : controller.profileimgurl.toString(),
+          : widget.docData!['doctorimg'],
       'name': _nameController.text.isNotEmpty ? _nameController.text : '',
       'email': _emailController.text.isNotEmpty ? _emailController.text : '',
       'phone': _phoneController.text.isNotEmpty ? _phoneController.text : '',
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           _endTimeController.text.isNotEmpty ? _endTimeController.text : '',
       'expcerft': documentcontroller.expcerftpath.value.isNotEmpty
           ? documentcontroller.expcerftUrl.toString()
-          : documentcontroller.expcerftUrl.toString(),
+          : widget.docData!['expcerft'],
     };
 
     await DoctorRepository().updateUserProfile(user!.uid, updatedData);
@@ -101,7 +101,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     CircleAvatar(
                       radius: 55,
                       backgroundImage: controller.isProfiepathSet.value == false
-                          ? NetworkImage(widget.docData!['doctorimg'] ?? '')
+                          ? NetworkImage(widget.docData!['doctorimg'])
                           : FileImage(File(controller.profilepicPath.value))
                               as ImageProvider,
                     ),
@@ -177,7 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: documentcontroller.isexpcerftpathSet.value ==
                                   false
                               ? Image.network(
-                                  (widget.docData!['expcerft'] ?? ''),
+                                  (widget.docData!['expcerft']),
                                   width:
                                       MediaQuery.of(context).size.width * 0.9,
                                   height:
