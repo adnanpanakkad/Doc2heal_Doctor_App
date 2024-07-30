@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:doc2heal_doctor/model/doctor_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -2,7 +2,6 @@ import 'package:doc2heal_doctor/services/firebase/appoinment.dart';
 import 'package:doc2heal_doctor/widgets/home/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 
 class AppoinmentCard extends StatelessWidget {
   AppointmentController controller = Get.put(AppointmentController());

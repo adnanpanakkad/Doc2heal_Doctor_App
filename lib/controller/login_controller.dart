@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   GlobalKey<FormState> loginformKey = GlobalKey<FormState>();
@@ -39,15 +38,33 @@ class LoginController extends GetxController {
 
   loginDoctor() async {
     if (loginformKey.currentState!.validate()) {
-      authenticationRepository.doctorLogin(
-          emailController.text.toString(), passwordController.text.toString());
-      Get.offAll(() => const BottombarScreens());
-      emailController.clear();
-      passwordController.clear();
+      try {
+        String? loginSuccess = await authenticationRepository.doctorLogin(
+            emailController.text, passwordController.text);
+        if (loginSuccess != null) {
+          Get.offAll(() => const BottombarScreens());
+          emailController.clear();
+          passwordController.clear();
+        } else {
+          Get.snackbar(
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              'Error',
+              'Something went wrong. Please try again later.');
+        }
+      } catch (e) {
+        Get.snackbar(
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            'Error',
+            'Invalid email or password');
+      }
     } else {
-      Get.snackbar('error', 'invalid password or email');
+      Get.snackbar(
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          'Error',
+          'Please enter valid credentials');
     }
   }
-
-
 }

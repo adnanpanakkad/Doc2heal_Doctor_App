@@ -10,7 +10,6 @@ import 'package:doc2heal_doctor/widgets/profile/detail_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 
 class SettingsScreen extends StatelessWidget {
   final String uid;

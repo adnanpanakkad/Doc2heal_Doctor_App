@@ -2,7 +2,6 @@ import 'package:doc2heal_doctor/model/appoinment.dart';
 import 'package:doc2heal_doctor/model/user_model.dart';
 import 'package:doc2heal_doctor/services/firebase/appoinment.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
-import 'package:doc2heal_doctor/utils/text_style.dart';
 import 'package:doc2heal_doctor/widgets/home/Appoinment_card.dart';
 import 'package:doc2heal_doctor/widgets/home/home_appbar.dart';
 import 'package:doc2heal_doctor/widgets/home/shimmer_screen.dart';

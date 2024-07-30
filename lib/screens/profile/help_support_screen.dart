@@ -9,14 +9,11 @@ class HelpandSupport extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 238, 240, 242),
-        appBar: PreferredSize(
-          preferredSize: const Size(double.maxFinite, 70),
-          child: DeatialAppbar(
-            text: 'Help & support',
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+        appBar: DeatialAppbar(
+          text: 'Help & support',
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
@@ -181,6 +178,13 @@ class HelpandSupport extends StatelessWidget {
               ),
               SizedBox(
                 height: 20,
+              ),
+              Text(
+                'App version: 1.0.1',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
               ),
             ]),
           ),

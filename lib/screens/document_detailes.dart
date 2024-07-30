@@ -19,12 +19,9 @@ class DocumentDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size(double.maxFinite, 70),
-        child: DeatialAppbar(
-          text: 'Document Details',
-          onTap: () => Get.back(),
-        ),
+      appBar: DeatialAppbar(
+        text: 'Document Details',
+        onTap: () => Get.back(),
       ),
       body: Obx(
         () => Padding(

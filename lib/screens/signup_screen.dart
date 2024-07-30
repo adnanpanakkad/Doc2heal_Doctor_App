@@ -20,12 +20,10 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-      appBar: PreferredSize(
-          preferredSize: const Size(double.maxFinite, 70),
-          child: DeatialAppbar(
-            text: 'Doctor Details',
-            onTap: () => Get.to(() => LoginScreen()),
-          )),
+      appBar: DeatialAppbar(
+        text: 'Doctor Details',
+        onTap: () => Get.to(() => LoginScreen()),
+      ),
       body: Obx(
         () => ListView(
           children: [

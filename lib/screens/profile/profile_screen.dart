@@ -93,13 +93,13 @@ class ProfileScreen extends StatelessWidget {
                                 Text(docdata['fees'] ?? 'No Fees Provided'),
                           ),
                           ListTile(
-                            leading: Icon(Icons.monetization_on_outlined),
+                            leading: Icon(Icons.watch_later),
                             title: Text('Timing'),
                             subtitle: Text(
                                 '${docdata['starttime']} to ${docdata['endtime']}' ??
                                     'No Fees Provided'),
                           ),
-                          Text(
+                          const Text(
                             'Experience certificate',
                             style: TextStyle(
                               fontSize: 15,
