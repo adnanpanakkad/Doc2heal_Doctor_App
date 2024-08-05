@@ -11,7 +11,6 @@ class DocumentController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController starttimeController = TextEditingController();
   final TextEditingController endtimeController = TextEditingController();
-
   final ImagePicker imagePicker = ImagePicker();
 
   RxString starttime = ''.obs;
@@ -71,7 +70,6 @@ class DocumentController extends GetxController {
     }
   }
 
-
   getImageUrlfromFirebase(String image) async {
     String? expcerftUrl;
     String uniqueName = DateTime.now().millisecond.toString();
@@ -90,34 +88,5 @@ class DocumentController extends GetxController {
 
   validateTimefieldes() async {
     if (timeKey.currentState!.validate()) {}
-  }
-
-  void showCustomSnackbar() {
-    Get.snackbar(
-      'Profile updated', 
-      'Your profile has been successfully updated.', 
-      snackPosition: SnackPosition.TOP, 
-      backgroundColor:
-          Colors.green.withOpacity(0.8), 
-      colorText: Colors.white, 
-      borderRadius: 8, 
-      margin: const EdgeInsets.all(10), 
-      icon: const Icon(
-        Icons.check_circle,
-        color: Colors.white,
-        size: 28,
-      ), 
-      shouldIconPulse: false, 
-      boxShadows: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 8,
-          offset: Offset(0, 2),
-        ),
-      ], 
-      duration: const Duration(seconds: 3), 
-      isDismissible: true, 
-      snackStyle: SnackStyle.FLOATING, 
-    );
   }
 }

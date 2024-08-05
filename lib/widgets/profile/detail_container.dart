@@ -41,11 +41,20 @@ class DetailContainer extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: doctorData['doctorimg'] != null
-                      ? NetworkImage(doctorData['doctorimg'])
-                      : null,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    image: DecorationImage(
+                      alignment: Alignment.topCenter,
+                      fit: BoxFit.cover,
+                      image: doctorData['doctorimg'] != null
+                          ? NetworkImage(doctorData['doctorimg'])
+                          : AssetImage('assets/default_profile_picture.png')
+                              as ImageProvider,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 30),
@@ -54,7 +63,7 @@ class DetailContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dr.${doctorData['name']}' ?? 'No Name',
+                    'Dr.${doctorData['name'] ?? 'No name'}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

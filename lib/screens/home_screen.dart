@@ -2,6 +2,7 @@ import 'package:doc2heal_doctor/model/appoinment.dart';
 import 'package:doc2heal_doctor/model/user_model.dart';
 import 'package:doc2heal_doctor/services/firebase/appoinment.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/home/Appoinment_card.dart';
 import 'package:doc2heal_doctor/widgets/home/home_appbar.dart';
 import 'package:doc2heal_doctor/widgets/home/shimmer_screen.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Appcolor.lightbackground,
         appBar: const HomeAppbar(
           text: 'Appoinments',
         ),
@@ -63,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
                           return const Center(
-                            child: Text('No appointments'),
+                            child: Text('No Appointments Today'),
                           );
                         } else {
                           final _appointments = snapshot.data!;

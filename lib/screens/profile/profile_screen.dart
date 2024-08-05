@@ -40,12 +40,24 @@ class ProfileScreen extends StatelessWidget {
                 var docdata = snapshot.data ?? {};
                 return Column(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: docdata['doctorimg'] != null
-                          ? NetworkImage(docdata['doctorimg'])
-                          : AssetImage('assets/default_profile_picture.png')
-                              as ImageProvider,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          image: DecorationImage(
+                            alignment: Alignment.topCenter,
+                            fit: BoxFit.cover,
+                            image: docdata['doctorimg'] != null
+                                ? NetworkImage(docdata['doctorimg'])
+                                : AssetImage(
+                                        'assets/default_profile_picture.png')
+                                    as ImageProvider,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text('Dr.${docdata['name']}' ?? 'Unknown User',
@@ -69,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
                                 docdata['phone'] ?? 'No Phone Number Provided'),
                           ),
                           ListTile(
-                            leading: Icon(Icons.account_box),
+                            leading: Icon(Icons.wc_sharp),
                             title: Text('Gender'),
                             subtitle:
                                 Text(docdata['gender'] ?? 'No Gender Provided'),
@@ -87,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
                                 'No Specialization Provided'),
                           ),
                           ListTile(
-                            leading: Icon(Icons.monetization_on_outlined),
+                            leading: Icon(Icons.currency_rupee),
                             title: Text('Fees'),
                             subtitle:
                                 Text(docdata['fees'] ?? 'No Fees Provided'),
@@ -104,8 +116,6 @@ class ProfileScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              fontFamily:
-                                  'YourFontFamilyName', // Replace with your actual font family name
                             ),
                           ),
                           SizedBox(

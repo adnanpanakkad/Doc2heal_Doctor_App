@@ -1,37 +1,74 @@
-import 'package:doc2heal_doctor/screens/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:flutter/material.dart';
 
-class CustomPopup extends StatelessWidget {
+class Popup extends StatelessWidget {
+  final String? message;
   final void Function()? onTap;
 
-  const CustomPopup({super.key, required this.onTap});
+  const Popup({
+    super.key,
+    required this.onTap,
+    required this.message,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       title: Icon(
         Icons.report,
-        color: Colors.red,
-        size: 50,
+        color: Colors.redAccent.shade400,
+        size: 60,
       ),
-      content: const Text('Are you sure you want to logout?',
-          style: TextStyle(color: Colors.black)),
-      actions: [
-        ElevatedButton(
-          child: const Text('Cancel', style: TextStyle(color: Colors.blue)),
-          onPressed: () {
-            Navigator.of(context).pop(); // Dismiss the dialog
-          },
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          message!,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
         ),
-        ElevatedButton(
-          child: const Text('Logout', style: TextStyle(color: Colors.red)),
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => LoginScreen()));
-          },
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Appcolor.primaryColor,
+                backgroundColor: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+              child: const Text('Yes'),
+              onPressed: onTap,
+            ),
+          ],
         ),
       ],
     );

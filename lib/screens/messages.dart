@@ -2,9 +2,12 @@ import 'package:doc2heal_doctor/model/appoinment.dart';
 import 'package:doc2heal_doctor/model/user_model.dart';
 import 'package:doc2heal_doctor/screens/chat_screen.dart';
 import 'package:doc2heal_doctor/services/firebase/appoinment.dart';
+import 'package:doc2heal_doctor/services/firebase/firebase_chat.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/chat/message_shimmer.dart';
 import 'package:doc2heal_doctor/widgets/common/custom_appbar.dart';
+import 'package:doc2heal_doctor/widgets/home/shimmer_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,11 +23,20 @@ class _MessageScreenState extends State<MessageScreen> {
   final AppointmentController appointmentController =
       Get.put(AppointmentController());
   final DoctorRepository _userService = Get.put(DoctorRepository());
+  final ChatRepository _chatRepository = Get.put(ChatRepository());
+
+  Stream<String?> _getLastMessageStream(String userId) {
+    final doctorId = FirebaseAuth.instance.currentUser!.uid;
+    return _chatRepository
+        .getLastMessageStream(userId, doctorId)
+        .map((lastMessage) => lastMessage?.message ?? '');
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Appcolor.lightbackground,
         body: Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 15),
           child: Column(
@@ -68,7 +80,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                 } else if (!snapshot.hasData ||
                                     snapshot.data!.isEmpty) {
                                   return const Center(
-                                    child: Text('No user booked'),
+                                    child: Text('No Patients'),
                                   );
                                 } else {
                                   final appointments = snapshot.data!;
@@ -94,23 +106,56 @@ class _MessageScreenState extends State<MessageScreen> {
                                             );
                                           } else {
                                             final user = userSnapshot.data!;
-                                            return ListTile(
-                                              leading: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    user.coverimag ?? ''),
-                                              ),
-                                              title:
-                                                  Text(user.name ?? 'No Name'),
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ChatScreen(
-                                                              reciverEmail:
-                                                                  user.name!,
-                                                              reciverID:
-                                                                  user.id!,
-                                                            )));
+                                            return StreamBuilder<String?>(
+                                              stream: _getLastMessageStream(
+                                                  user.id!),
+                                              builder:
+                                                  (context, messageSnapshot) {
+                                                if (messageSnapshot
+                                                        .connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const ShimmerList();
+                                                } else if (messageSnapshot
+                                                    .hasError) {
+                                                  return const Center(
+                                                    child: Text(
+                                                        'Error loading message'),
+                                                  );
+                                                } else {
+                                                  final lastMessage =
+                                                      messageSnapshot.data ??
+                                                          'No messages';
+
+                                                  return ListTile(
+                                                    leading: CircleAvatar(
+                                                      radius: 30,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              user.coverimag ??
+                                                                  ''),
+                                                    ),
+                                                    title: Text(
+                                                        user.name ?? 'No Name'),
+                                                    subtitle: Text(
+                                                      lastMessage,
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
+                                                    ),
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChatScreen(
+                                                            reciverEmail:
+                                                                user.name!,
+                                                            reciverID: user.id!,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
                                               },
                                             );
                                           }

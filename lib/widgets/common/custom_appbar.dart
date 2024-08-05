@@ -33,25 +33,25 @@ class CustomAppbar extends StatelessWidget {
           ),
         ),
         SizedBox(
-          child: Row(
-            children: [
-              // IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.videocam_outlined,
-              //     size: 30,
-              //   ),
-              // ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.more_vert_outlined,
-                  size: 28,
-                ),
-              ),
-            ],
-          ),
-        ),
+            // child: Row(
+            //   children: [
+            //     // IconButton(
+            //     //   onPressed: () {},
+            //     //   icon: Icon(
+            //     //     Icons.videocam_outlined,
+            //     //     size: 30,
+            //     //   ),
+            //     // ),
+            //     IconButton(
+            //       onPressed: () {},
+            //       icon: const Icon(
+            //         Icons.more_vert_outlined,
+            //         size: 28,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            ),
       ],
     );
   }

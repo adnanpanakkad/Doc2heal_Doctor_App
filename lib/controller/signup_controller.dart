@@ -184,11 +184,10 @@ class SignupController extends GetxController {
       File file = File(imagePath);
       TaskSnapshot taskSnapshot = await toUploadImgReference.putFile(file);
       profileimgurl = await taskSnapshot.ref.getDownloadURL();
-      // await _db.collection("user").doc(userId).update({'coverimag': imageUrl});
       log(profileimgurl);
-      print("Download URL: $profileimgurl"); // Debug print to check URL
+      print("Download URL: $profileimgurl"); 
     } catch (e) {
-      print("Error uploading image: $e"); // Debug print to check errors
+      print("Error uploading image: $e");
     }
     return profileimgurl;
   }

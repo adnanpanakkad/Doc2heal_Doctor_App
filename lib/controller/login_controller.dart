@@ -1,5 +1,6 @@
 import 'package:doc2heal_doctor/screens/bottombar_screens.dart';
 import 'package:doc2heal_doctor/services/firebase/authentication.dart';
+import 'package:doc2heal_doctor/widgets/common/custom_snacbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,25 +47,34 @@ class LoginController extends GetxController {
           emailController.clear();
           passwordController.clear();
         } else {
-          Get.snackbar(
-              backgroundColor: Colors.red,
-              colorText: Colors.white,
-              'Error',
-              'Something went wrong. Please try again later.');
+          CustomSnackbar.show(
+              title: 'error',
+              description: 'Something went wrong. Please try again later.',
+              backgroundColor: Colors.red.shade600,
+              icon: Icon(
+                Icons.cancel_outlined,
+                color: Colors.white,
+              ));
         }
       } catch (e) {
-        Get.snackbar(
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            'Error',
-            'Invalid email or password');
+        CustomSnackbar.show(
+            title: 'Login Failed',
+            description: 'The email or password you entered is incorrect',
+            backgroundColor: Colors.red.shade600,
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ));
       }
     } else {
-      Get.snackbar(
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          'Error',
-          'Please enter valid credentials');
+      CustomSnackbar.show(
+          title: 'error',
+          description: 'Please enter valid credentials',
+          backgroundColor: Colors.red.shade600,
+          icon: Icon(
+            Icons.cancel_outlined,
+            color: Colors.white,
+          ));
     }
   }
 }

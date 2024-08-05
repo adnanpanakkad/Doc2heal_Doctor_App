@@ -1,5 +1,6 @@
 import 'package:doc2heal_doctor/services/firebase/firebase_chat.dart';
 import 'package:doc2heal_doctor/services/firebase/firestore.dart';
+import 'package:doc2heal_doctor/utils/app_color.dart';
 import 'package:doc2heal_doctor/widgets/chat/appbar.dart';
 import 'package:doc2heal_doctor/widgets/chat/chat_message.dart';
 import 'package:doc2heal_doctor/widgets/chat/user_input.dart';
@@ -63,10 +64,11 @@ class _ChatScreenState extends State<ChatScreen> {
     scrollDown();
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Appcolor.lightbackground,
         appBar: DeatialAppbar(
           text: widget.reciverEmail,
           onTap: () {
